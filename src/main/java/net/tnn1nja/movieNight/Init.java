@@ -1,4 +1,4 @@
-package net.tnn1nja;
+package net.tnn1nja.movieNight;
 
 public class Init {
 
