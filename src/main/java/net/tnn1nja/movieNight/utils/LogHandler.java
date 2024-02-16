@@ -1,5 +1,7 @@
 package net.tnn1nja.movieNight.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.*;
 
 public class LogHandler extends Formatter {
@@ -17,9 +19,10 @@ public class LogHandler extends Formatter {
     public String format(LogRecord record) {
         //Create and Format Strings
         String recordLevel = formatLevel(record.getLevel());
+        String time = formatDate(record.getMillis());
 
         //Return Final Concatenated String
-        return "[" + recordLevel + "] " + record.getMessage() + "\n";
+        return "[" + time + "] [" + recordLevel + "] " + record.getMessage() + "\n";
     }
 
     //Remaps Fine, Finer and Finest Levels to "Debug"
@@ -29,5 +32,12 @@ public class LogHandler extends Formatter {
         }else{
             return recordLevel.getName();
         }
+    }
+
+    //Converts Unix Time Stamp to Readable Date.
+    public static String formatDate(long millis) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy HH:mm");
+        Date resultdate = new Date(millis);
+        return dateFormat.format(resultdate);
     }
 }
