@@ -1,7 +1,11 @@
 package net.tnn1nja.movieNight.utils;
 
+import java.util.logging.Logger;
 
-public class Logger {
-    java.util.logging.Logger log = java.util.logging.Logger.getLogger("mainLogger");
+public class LogHandler {
+    static Logger log = Logger.getLogger("mainLogger");
 
+    public static void setup(){
+        log.info("Hello World!");
+    }
 }
