@@ -20,10 +20,13 @@ public class LogHandler extends Formatter {
         //Create and Format Strings
         String recordLevel = formatLevel(record.getLevel());
         String time = formatDate(record.getMillis());
+        String tab = tabDistance(formatLevel(record.getLevel()));
+
 
         //Return Final Concatenated String
-        return "[" + time + "] [" + recordLevel + "] " + record.getMessage() + "\n";
+        return "[" + time + "] [" + recordLevel + "] " + tab + record.getMessage() + "\n";
     }
+
 
     //Remaps Fine, Finer and Finest Levels to "Debug"
     public static String formatLevel(Level recordLevel){
@@ -39,5 +42,15 @@ public class LogHandler extends Formatter {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy HH:mm");
         Date resultdate = new Date(millis);
         return dateFormat.format(resultdate);
+    }
+
+    //Get Tab Distance
+    public static String tabDistance(String levelName){
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < 8- levelName.toCharArray().length; i++){
+            builder.append(" ");
+        }
+        builder.append("- ");
+        return builder.toString();
     }
 }
