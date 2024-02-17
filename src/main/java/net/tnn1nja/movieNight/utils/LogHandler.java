@@ -6,6 +6,15 @@ import java.util.logging.*;
 
 public class LogHandler extends Formatter {
 
+    //Color Codes
+    private static final String RESET  = "\u001B[0m";
+    private static final String GRAY  = "\u001B[37m";
+    private static final String WHITE  = "\u001B[97m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String RED    = "\u001B[31m";
+    private static final String GREEN  = "\u001B[32m";
+    private static final String BLUE = "\u001B[34m";
+
     public static void setup(Logger log){
         //Base Settings
         log.setUseParentHandlers(false);
@@ -15,17 +24,27 @@ public class LogHandler extends Formatter {
         log.addHandler(ch);
     }
 
-    @Override
+    //Main Inherited Formatter Method
     public String format(LogRecord record) {
+        // Set Level Color Depending on Level
+        String levelColor = switch (record.getLevel().getName()) {
+            case("INFO") -> GREEN;
+            case("WARNING") -> YELLOW;
+            case("SEVERE") -> RED;
+            default -> BLUE;
+        };
+
         //Create and Format Strings
-        String recordLevel = formatLevel(record.getLevel());
-        String time = formatDate(record.getMillis());
+        String time = GRAY + formatDate(record.getMillis()) + WHITE;
+        String recordLevel = formatLevel(record.getLevel()) + WHITE;
         String tab = tabDistance(formatLevel(record.getLevel()));
 
 
         //Return Final Concatenated String
-        return "[" + time + "] [" + recordLevel + "] " + tab + record.getMessage() + "\n";
+        return WHITE + "[" + time + "] [" + recordLevel +"]" + tab + record.getMessage() + "\n" + RESET;
     }
+
+
 
 
     //Remaps Fine, Finer and Finest Levels to "Debug"
