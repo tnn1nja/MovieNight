@@ -7,21 +7,17 @@ import java.util.logging.Logger;
 
 public class Main {
 
-    //Constants, Variables and Objects
+    //Constants, Variables and git Objects
     public static Logger log = Logger.getLogger("mainLogger");
     public static String mainPath = "C:/users/theno/desktop";
 
     //On Program Start
     public void onStart(){
 
+        //Setup Logger
         LoggerUtils.setup(log, Level.FINEST, mainPath);
+        log.info("Logger Started.");
 
-        log.info("Info Log!");
-        log.warning("Warning Log!");
-        log.severe("Severe Log!");
-        log.fine("Debug Log!");
-
-        System.out.println("Hello World");
     }
 
 }
