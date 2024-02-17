@@ -15,11 +15,13 @@ public class LogHandler extends Formatter {
     private static final String GREEN  = "\u001B[32m";
     private static final String BLUE = "\u001B[34m";
 
-    public static void setup(Logger log){
+    public static void setup(Logger log, Level inputLevel){
         //Base Settings
         log.setUseParentHandlers(false);
+        log.setLevel(inputLevel);
 
         ConsoleHandler ch = new ConsoleHandler();
+        ch.setLevel(inputLevel);
         ch.setFormatter(new LogHandler());
         log.addHandler(ch);
     }

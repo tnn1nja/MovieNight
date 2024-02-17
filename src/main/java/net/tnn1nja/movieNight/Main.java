@@ -2,6 +2,7 @@ package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.utils.LogHandler;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main {
@@ -10,7 +11,7 @@ public class Main {
 
     public void onStart(){
 
-        LogHandler.setup(log);
+        LogHandler.setup(log, Level.FINEST);
 
         log.info("Info Log!");
         log.warning("Warning Log!");
