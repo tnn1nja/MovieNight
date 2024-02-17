@@ -36,7 +36,7 @@ public class LogHandler extends Formatter {
 
         //Create and Format Strings
         String time = GRAY + formatDate(record.getMillis()) + WHITE;
-        String recordLevel = formatLevel(record.getLevel()) + WHITE;
+        String recordLevel = levelColor + formatLevel(record.getLevel()) + WHITE;
         String tab = tabDistance(formatLevel(record.getLevel()));
 
 
