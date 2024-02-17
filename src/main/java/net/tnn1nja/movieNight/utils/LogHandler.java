@@ -1,5 +1,6 @@
 package net.tnn1nja.movieNight.utils;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.*;
@@ -15,19 +16,31 @@ public class LogHandler extends Formatter {
     private static final String GREEN  = "\u001B[32m";
     private static final String BLUE = "\u001B[34m";
 
-    public static void setup(Logger log, Level inputLevel){
+    public static void setup(Logger log, Level inputLevel, String path){
         //Base Settings
         log.setUseParentHandlers(false);
         log.setLevel(inputLevel);
 
+        //Console Formatting
         ConsoleHandler ch = new ConsoleHandler();
         ch.setLevel(inputLevel);
         ch.setFormatter(new LogHandler());
         log.addHandler(ch);
+
+        //File Formatting
+        try {
+            FileHandler fh = new FileHandler(path + "/logfile.txt");
+            fh.setLevel(inputLevel);
+            fh.setFormatter(new LogHandler());
+            log.addHandler(fh);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     //Main Inherited Formatter Method
     public String format(LogRecord record) {
+
         // Set Level Color Depending on Level
         String levelColor = switch (record.getLevel().getName()) {
             case("INFO") -> GREEN;
