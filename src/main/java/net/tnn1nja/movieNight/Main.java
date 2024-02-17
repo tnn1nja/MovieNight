@@ -1,20 +1,20 @@
 package net.tnn1nja.movieNight;
 
-import net.tnn1nja.movieNight.utils.LogHandler;
+import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main {
 
-    //Log File Location
-    static String mainPath = "C:/users/theno/desktop";
+    //Constants, Variables and Objects
+    public static Logger log = Logger.getLogger("mainLogger");
+    public static String mainPath = "C:/users/theno/desktop";
 
-    Logger log = Logger.getLogger("mainLogger");
-
+    //On Program Start
     public void onStart(){
 
-        LogHandler.setup(log, Level.FINEST, mainPath);
+        LoggerUtils.setup(log, Level.FINEST, mainPath);
 
         log.info("Info Log!");
         log.warning("Warning Log!");
