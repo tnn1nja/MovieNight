@@ -13,7 +13,7 @@ public class Main {
     public static Logger log = Logger.getLogger("mainLogger");
 
     //Singletons
-    public static Database db;
+    public static Database db = new Database();
 
     //On Program Start
     public void onStart(){
