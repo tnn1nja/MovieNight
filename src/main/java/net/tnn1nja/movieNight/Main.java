@@ -23,7 +23,7 @@ public class Main {
         log.info("Logger Started.");
 
 
-        db.run("CREATE TABLE Test ( TestID INTEGER PRIMARY KEY AUTOINCREMENT");
+        db.run("CREATE TABLE Test (TestID INTEGER PRIMARY KEY AUTOINCREMENT)");
 
     }
 

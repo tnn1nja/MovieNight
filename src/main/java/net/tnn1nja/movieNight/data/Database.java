@@ -6,7 +6,7 @@ import static net.tnn1nja.movieNight.Main.log;
 
 public class Database {
 
-    private String dbUrl = "jdbc:sqlite:movies.db";
+    private final String dbUrl = "jdbc:sqlite:movies.db";
 
 
     private Connection getConnection() throws SQLException{
@@ -29,7 +29,7 @@ public class Database {
             closeConnection(c);
 
         }catch(SQLException e){
-            log.severe("SQL command failed - SQLException");
+            log.severe("SQL Command Failed - SQLException");
             e.printStackTrace();
         }
     }
@@ -43,7 +43,7 @@ public class Database {
             return rs;
 
         }catch(SQLException e){
-            log.severe("SQL query failed - SQLException");
+            log.severe("SQL Query Failed - SQLException");
             e.printStackTrace();
             return null;
         }
