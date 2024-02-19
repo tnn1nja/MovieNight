@@ -4,6 +4,7 @@ import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.tnn1nja.movieNight.data.database;
 
 public class Main {
 
@@ -17,6 +18,7 @@ public class Main {
         //Setup Logger
         LoggerUtils.setup(log, Level.FINEST, mainPath);
         log.info("Logger Started.");
+        database.setup();
 
     }
 
