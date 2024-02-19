@@ -9,7 +9,7 @@ public class Main {
 
     //Constants, Variables and git Objects
     public static Logger log = Logger.getLogger("mainLogger");
-    public static String mainPath = "C:/users/theno/desktop";
+    public static String mainPath = "D:/Coding/WBS/MovieNight/data";
 
     //On Program Start
     public void onStart(){
