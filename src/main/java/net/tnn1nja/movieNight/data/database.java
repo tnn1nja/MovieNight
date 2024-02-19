@@ -14,7 +14,7 @@ public class database {
         String dbUrl = "jdbc:sqlite:movies.db";
         try {
             connection = DriverManager.getConnection(dbUrl);
-            log.info("Databae Connection Esablished");
+            log.info("Database Connection Esablished");
 
             connection.close();
             log.info("Database Connection Closed");
