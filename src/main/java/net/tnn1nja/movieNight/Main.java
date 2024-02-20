@@ -25,8 +25,13 @@ public class Main {
         //Database Setup
         db.connect();
         db.initialise();
-        db.close();
+        onClose();
 
+    }
+
+    //On Program End
+    public void onClose(){
+        db.close();
     }
 
 }

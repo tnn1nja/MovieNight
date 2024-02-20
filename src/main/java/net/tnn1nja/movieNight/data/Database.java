@@ -11,7 +11,7 @@ public class Database {
     private Connection conn;
 
 
-    //Initial database connection.
+    //Initial Database Connection.
     public void connect(){
         try {
             conn = DriverManager.getConnection(dbUrl);
@@ -39,6 +39,7 @@ public class Database {
         try {
             Statement s = conn.createStatement();
             s.execute(prompt + ";");
+            log.fine("SQL Command Successfully Issued");
 
         }catch(SQLException e){
             log.severe("SQL Command Failed - SQLException");
@@ -50,6 +51,7 @@ public class Database {
     public ResultSet query(String prompt){
         try {
             Statement s = conn.createStatement();
+            log.fine("SQL Query Successfully Issued");
             return s.executeQuery(prompt + ";");
 
         } catch (SQLException e) {
@@ -62,49 +64,57 @@ public class Database {
 
     //Generate Tables
     public void initialise(){
+        //Set Constants
         run("PRAGMA foreign_keys=ON");
+        //Films Table
         run("CREATE TABLE IF NOT EXISTS Films (" +
                 "FilmID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "Title VARCHAR(128)," +
                 "Synopsis TEXT," +
-                "Year INTEGER," +
+                "Year INTEGER DEFAULT -1," +
                 "Cover VARCHAR(256)," +
-                "Rating INTEGER," +
-                "Genre INTEGER" +
+                "Rating INTEGER DEFAULT -1," +
+                "Genre INTEGER DEFAULT -1" +
                 ")");
+        //UserData Table
         run("CREATE TABLE IF NOT EXISTS UserData (" +
                 "UserDataID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "FilmID INTEGER," +
+                "FilmID INTEGER DEFAULT -1," +
                 "Saved BOOLEAN," +
                 "Liked BOOLEAN," +
                 "Seen BOOLEAN," +
                 "FOREIGN KEY (FilmID) REFERENCES Films(FilmID)" +
                 ")");
+        //Providers Table
         run("CREATE TABLE IF NOT EXISTS Providers (" +
                 "ProviderID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "Name VARCHAR(64)," +
                 "URL VARCHAR(256)," +
                 "Logo VARCHAR (256)" +
                 ")");
+        //People Table
         run("CREATE TABLE IF NOT EXISTS People (" +
                 "PersonID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "Name VARCHAR(128)" +
                 ")");
+        //ProvidersLink Table
         run("CREATE TABLE IF NOT EXISTS ProvidersLink (" +
                 "ProviderLinkID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "FilmID INTEGER," +
-                "ProviderID INTEGER," +
+                "FilmID INTEGER DEFAULT -1," +
+                "ProviderID INTEGER DEFAULT -1," +
                 "FOREIGN KEY (FilmID) REFERENCES Films(FilmID)," +
                 "FOREIGN KEY (ProviderID) REFERENCES Providers(ProviderID)" +
                 ")");
+        //PRFLink Table
         run("CREATE TABLE IF NOT EXISTS PRFLink (" +
                 "PRFLinkID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "FilmID INTEGER," +
-                "PersonID INTEGER," +
-                "Role INTEGER," +
+                "FilmID INTEGER DEFAULT -1," +
+                "PersonID INTEGER DEFAULT -1," +
+                "Role INTEGER DEFAULT -1," +
                 "FOREIGN KEY (FilmID) REFERENCES Films(FilmID)," +
                 "FOREIGN KEY (PersonID) REFERENCES People(PersonID)" +
                 ")");
+
         log.info("Database Tables Successfully Initialised");
     }
 }
