@@ -2,6 +2,7 @@ package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
+import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.tnn1nja.movieNight.data.Database;
@@ -22,8 +23,13 @@ public class Main {
         LoggerUtils.setup(log, Level.FINEST, mainPath);
         log.info("Logger Started.");
 
-
-        db.run("CREATE TABLE Test (TestID INTEGER PRIMARY KEY AUTOINCREMENT)");
+        //Database
+        ResultSet rs = db.query("SELECT * FROM Test");
+        try {
+            System.out.println(rs.getInt("TestID"));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
     }
 
