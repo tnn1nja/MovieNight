@@ -1,5 +1,6 @@
 package net.tnn1nja.movieNight;
 
+import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
 import java.util.logging.Level;
@@ -14,23 +15,29 @@ public class Main {
 
     //Singletons
     public static Database db = new Database();
+    public static APIs api = new APIs();
 
     //On Program Start
-    public void onStart(){
+    public static void onStart(){
 
         //Logger Setup
         LoggerUtils.setup(log, Level.FINEST, mainPath);
         log.info("Logger Started.");
 
         //Database Setup
+        /*
         db.connect();
         db.initialise();
         onClose();
+         */
+
+        //APIs
+        api.test();
 
     }
 
     //On Program End
-    public void onClose(){
+    public static void onClose(){
         db.close();
     }
 
