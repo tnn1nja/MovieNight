@@ -7,6 +7,7 @@ import java.util.logging.*;
 
 public class LoggerUtils  {
 
+    //Setup the Logger
     public static void setup(Logger log, Level inputLevel, String path){
         //Base Settings
         log.setUseParentHandlers(false);
