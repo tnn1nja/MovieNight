@@ -22,14 +22,16 @@ public class Main {
         //Setup
         LoggerUtils.setup(log, Level.FINEST, mainPath);
         log.info("Logger Started.");
+        db.connect();
 
-        //Database
         ResultSet rs = db.query("SELECT * FROM Test");
         try {
             System.out.println(rs.getInt("TestID"));
         }catch(Exception e){
             e.printStackTrace();
         }
+
+        db.close();
 
     }
 
