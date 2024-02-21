@@ -18,7 +18,7 @@ public class Database {
             log.info("Database Connection Established");
         }catch(SQLException e){
             log.severe("Failed to Establish Database Connection: " + e.getMessage());
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
