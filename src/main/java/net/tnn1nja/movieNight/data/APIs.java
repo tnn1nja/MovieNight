@@ -40,7 +40,7 @@ public class APIs {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
         }catch(InterruptedException | IOException e){
-            log.severe("API Request Failed");
+            log.severe("API Request Failed: " + e.getMessage());
             e.printStackTrace();
         }
 

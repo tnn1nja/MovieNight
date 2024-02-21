@@ -17,8 +17,8 @@ public class Database {
             conn = DriverManager.getConnection(dbUrl);
             log.info("Database Connection Established");
         }catch(SQLException e){
-            log.severe("Failed to Establish Database Connection");
-            e.printStackTrace();
+            log.severe("Failed to Establish Database Connection: " + e.getMessage());
+            //e.printStackTrace();
         }
     }
 
@@ -28,7 +28,7 @@ public class Database {
             conn.close();
             log.info("Database Connection Closed");
         }catch(SQLException e){
-            log.severe("Failed to Close Database Connection");
+            log.severe("Failed to Close Database Connection: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -42,7 +42,7 @@ public class Database {
             log.fine("SQL Command Successfully Issued");
 
         }catch(SQLException e){
-            log.severe("SQL Command Failed - SQLException");
+            log.severe("SQL Command Failed - SQLException: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -55,7 +55,7 @@ public class Database {
             return s.executeQuery(prompt + ";");
 
         } catch (SQLException e) {
-            log.severe("SQL Query Failed - SQLException");
+            log.severe("SQL Query Failed - SQLException: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
