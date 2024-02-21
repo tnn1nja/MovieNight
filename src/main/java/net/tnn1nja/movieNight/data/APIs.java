@@ -11,10 +11,10 @@ import static net.tnn1nja.movieNight.Main.log;
 public class APIs {
 
     //Constants
-    private final String address = "https://streaming-availability.p.rapidapi.com/search/basic?";
+    private final String address = "https://streaming-availability.p.rapidapi.com/search/basic";
     private final String APIKey = "55a3606031mshcf4633bebae51abp130e52jsnc5476f35f166";
 
-    //Out-facing Methods
+    //Out-Facing Methods
     public void test(){
         String[] providers = {"netflix", "disney", "prime", "iplayer", "all4"};
         for(String s: providers) {
@@ -32,7 +32,8 @@ public class APIs {
         HttpResponse<String> response = null;
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(address + "country=gb&type=movie&output_language=en&language=en" + prompt))
+                    .uri(URI.create(address + "?country=gb&type=movie&output_language=en&language=en" +
+                            "&order_by=popularity_alltime" + prompt))
                     .header("X-RapidAPI-Key", APIKey)
                     .header("X-RapidAPI-Host", "streaming-availability.p.rapidapi.com")
                     .method("GET", HttpRequest.BodyPublishers.noBody())
