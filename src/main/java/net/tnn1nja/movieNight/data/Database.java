@@ -7,7 +7,7 @@ import static net.tnn1nja.movieNight.Main.log;
 public class Database {
 
     //Variables and Constants
-    private final String dbUrl = "jdbc:sqlite:movies.db";
+    private static final String dbUrl = "jdbc:sqlite:movies.db";
     private Connection conn;
 
 
