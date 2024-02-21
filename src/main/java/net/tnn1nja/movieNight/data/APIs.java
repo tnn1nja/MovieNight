@@ -16,14 +16,14 @@ public class APIs {
 
     //Out-facing Methods
     public void test(){
-        System.out.println(
-                call("country=gb" +
-                        "&service=netflix" +
-                        "&type=movie" +
-                        "&page=1" +
-                        "&output_language=en" +
-                        "&language=en")
-        );
+        String[] providers = {"netflix", "disney", "prime", "iplayer", "all4"};
+        for(String s: providers) {
+            System.out.println("\n");
+            System.out.println(
+                    call("&service=netflix" + "&page=1")
+            );
+            System.out.println("\n");
+        }
     }
 
 
@@ -32,7 +32,7 @@ public class APIs {
         HttpResponse<String> response = null;
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(address + prompt))
+                    .uri(URI.create(address + "country=gb&type=movie&output_language=en&language=en" + prompt))
                     .header("X-RapidAPI-Key", APIKey)
                     .header("X-RapidAPI-Host", "streaming-availability.p.rapidapi.com")
                     .method("GET", HttpRequest.BodyPublishers.noBody())

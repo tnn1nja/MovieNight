@@ -31,8 +31,6 @@ public class Main {
         onClose();
          */
 
-        //Test Comment
-
         //APIs
         api.test();
 
