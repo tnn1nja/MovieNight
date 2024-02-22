@@ -91,7 +91,8 @@ public class Database {
                 "ProviderID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "Name VARCHAR(64)," +
                 "URL VARCHAR(256)," +
-                "Logo VARCHAR (256)" +
+                "Logo VARCHAR (256)," +
+                "ApiTag VARCHAR (32)," +
                 ")");
         //People Table
         run("CREATE TABLE IF NOT EXISTS People (" +
