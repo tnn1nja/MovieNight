@@ -74,7 +74,8 @@ public class Database {
                 "Year INTEGER DEFAULT -1," +
                 "Cover VARCHAR(256)," +
                 "Rating INTEGER DEFAULT -1," +
-                "Genre INTEGER DEFAULT -1" +
+                "Genre VARCHAR(64)," +
+                "TmdbID INTEGER DEFAULT -1"+
                 ")");
         //UserData Table
         run("CREATE TABLE IF NOT EXISTS UserData (" +

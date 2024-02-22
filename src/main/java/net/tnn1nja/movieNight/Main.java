@@ -25,14 +25,12 @@ public class Main {
         log.info("Logger Started.");
 
         //Database Setup
-        /*
         db.connect();
         db.initialise();
         onClose();
-         */
 
         //APIs
-        api.test();
+        //api.test();
 
     }
 

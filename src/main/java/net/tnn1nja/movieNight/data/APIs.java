@@ -16,7 +16,7 @@ public class APIs {
 
     //Out-Facing Methods
     public void test(){
-        String[] providers = {"netflix", "disney", "prime", "iplayer", "all4"};
+        String[] providers = {"netflix", "disney", "prime.subscription", "iplayer", "all4"};
         for(String s: providers) {
             System.out.println("\n");
             System.out.println(
