@@ -25,8 +25,38 @@ public class APIs {
         JSONArray arr = obj.getJSONArray("results");
         for (Object o: arr){
             JSONObject jo = (JSONObject) o;
-            System.out.println(jo.getString("title"));
+            op("Title: " + jo.getString("title"));
+            op("Synopsis: " + jo.getString("overview"));
+            op("Year: " + jo.getInt("year"));
+            op("Cover: " + jo.getJSONObject("posterURLs").getString("185"));
+            op("Rating: " + jo.getInt("imdbRating") + "/100");
+            op("TmdbID: " + jo.getString("tmdbID"));
+            op("Director: " + jo.getJSONArray("significants").getString(0));
+
+            //GENRES
+            StringBuilder sb = new StringBuilder();
+            sb.append("Genres: ");
+            for(Object o2: jo.getJSONArray("genres")){
+                int i = (int) o2;
+                sb.append(i + ",");
+            }
+            op(sb.toString());
+
+            //CAST
+            sb = new StringBuilder();
+            sb.append("CAST: ");
+            for(Object o2: jo.getJSONArray("cast")){
+                String s = (String) o2;
+                sb.append(s + ",");
+            }
+            op(sb.toString());
+
+            break;
         }
+    }
+
+    static void op(String s){
+        System.out.println(s);
     }
 
 
