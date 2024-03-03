@@ -76,7 +76,6 @@ public class Database {
                 "Title VARCHAR(128)," +
                 "Synopsis TEXT," +
                 "Year INTEGER DEFAULT -1," +
-                "Cover VARCHAR(256)," +
                 "Rating INTEGER DEFAULT -1," +
                 "Genres VARCHAR(64)," +
                 "TmdbID VARCHAR(64) DEFAULT -1"+
