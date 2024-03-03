@@ -54,9 +54,16 @@ public class APIs {
             db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(6, 'Custom'," +
                     " null, 'custom.jpg', 'custom')");
             log.info("Providers Table Populated.");
+
         }catch (SQLException e){
-            log.finest("Providers Table Already Populated.");
-            System.out.println(e.getMessage());
+            String violation = "[SQLITE_CONSTRAINT_PRIMARYKEY] A PRIMARY KEY constraint failed " +
+                    "(UNIQUE constraint failed: Providers.ProviderID)";
+            if (e.getMessage().equalsIgnoreCase(violation)) {
+                log.finest("Providers Table Already Populated... Skipping");
+            }else{
+                log.severe("Failed to Populate Providers Table - SQLException: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
