@@ -35,10 +35,10 @@ public class APIs {
         ArrayList<JSONFilm> film = extractData(jsonObject);
         saveData(film.get(0));
          */
-        populateProviders();
     }
 
-    //Save JSONFilm to Database
+
+    //Populate the Providers Table (Hardcoded)
     public void populateProviders(){
         try {
             db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(1, 'Netflix', " +
@@ -67,7 +67,8 @@ public class APIs {
         }
     }
 
-    //Make a Call to the API
+
+    //Make API Call
     private String call(String prompt){ //&service=netflix&page=1
         HttpResponse<String> response = null;
         try {
@@ -88,19 +89,6 @@ public class APIs {
         return response.body();
     }
 
-    //Download Image From HTTP Address
-    public void downloadImage(String http, String filename){
-        try {
-            URL url = new URL(http);
-            InputStream in = url.openStream();
-            Path destination = Path.of(".\\media\\film\\" + filename + ".jpg");
-            Files.copy(in, destination, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            log.severe("Failed to Download Image " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
     //Extract Data From JSONObject
     private ArrayList<JSONFilm> extractData(JSONObject jsonObject){
         ArrayList<JSONFilm> output = new ArrayList<JSONFilm>();
@@ -119,7 +107,7 @@ public class APIs {
             StringBuilder sb = new StringBuilder();
             for(Object genre: jo.getJSONArray("genres")){
                 int i = (int) genre;
-                sb.append(i + ",");
+                sb.append(i).append(",");
             }
             jf.GENRES = sb.toString();
 
@@ -135,7 +123,20 @@ public class APIs {
         return output;
     }
 
-    //Unformatted Film Data Class
+    //Download Image From HTTP Address
+    public void downloadImage(String http, String filename){
+        try {
+            URL url = new URL(http);
+            InputStream in = url.openStream();
+            Path destination = Path.of(".\\media\\film\\" + filename + ".jpg");
+            Files.copy(in, destination, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            log.severe("Failed to Download Image " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    //Film Data Class
     private static class JSONFilm{
         String TITLE;
         String SYNOPSIS;

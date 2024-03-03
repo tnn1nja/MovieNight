@@ -11,7 +11,7 @@ public class Database {
     private Connection conn;
 
 
-    //Initial Database Connection.
+    //Initialise Database Connection.
     public void connect(){
         try {
             conn = DriverManager.getConnection(dbUrl);
@@ -34,7 +34,7 @@ public class Database {
     }
 
 
-    //Run SQL Command Unhandled
+    //Run SQL Command With Unhandled SQLException
     public void runUnhandled(String prompt) throws SQLException{
         Statement s = conn.createStatement();
         s.execute(prompt + ";");
@@ -66,7 +66,7 @@ public class Database {
     }
 
 
-    //Generate Tables
+    //Generate Tables (Hardcoded)
     public void initialise(){
         //Set Constants
         run("PRAGMA foreign_keys=ON");

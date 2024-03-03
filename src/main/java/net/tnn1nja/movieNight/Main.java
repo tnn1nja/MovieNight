@@ -10,7 +10,7 @@ import net.tnn1nja.movieNight.data.Database;
 public class Main {
 
     //Constants
-    public static String mainPath = "D:/Coding/WBS/MovieNight/data";
+    public static String mainPath = "D:/Coding/WBS/MovieNight/data"; //RELATIVE PATH LATER
     public static Logger log = Logger.getLogger("mainLogger");
 
     //Singletons
@@ -39,6 +39,7 @@ public class Main {
     //On Program End
     public static void onClose(){
         db.close();
+        System.exit(0);
     }
 
 }
