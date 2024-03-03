@@ -34,13 +34,17 @@ public class Database {
     }
 
 
+    //Run SQL Command Unhandled
+    public void runUnhandled(String prompt) throws SQLException{
+        Statement s = conn.createStatement();
+        s.execute(prompt + ";");
+        log.fine("SQL Command Successfully Issued");
+    }
+
     //Run SQL Command
     public void run(String prompt){
         try {
-            Statement s = conn.createStatement();
-            s.execute(prompt + ";");
-            log.fine("SQL Command Successfully Issued");
-
+            runUnhandled(prompt);
         }catch(SQLException e){
             log.severe("SQL Command Failed - SQLException: " + e.getMessage());
             e.printStackTrace();
@@ -92,7 +96,7 @@ public class Database {
                 "Name VARCHAR(64)," +
                 "URL VARCHAR(256)," +
                 "Logo VARCHAR (256)," +
-                "ApiTag VARCHAR (32)," +
+                "ApiTag VARCHAR (32)" +
                 ")");
         //People Table
         run("CREATE TABLE IF NOT EXISTS People (" +
