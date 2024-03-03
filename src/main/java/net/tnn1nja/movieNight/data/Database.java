@@ -74,7 +74,7 @@ public class Database {
                 "Year INTEGER DEFAULT -1," +
                 "Cover VARCHAR(256)," +
                 "Rating INTEGER DEFAULT -1," +
-                "Genre VARCHAR(64)," +
+                "Genres VARCHAR(64)," +
                 "TmdbID VARCHAR(64) DEFAULT -1"+
                 ")");
         //UserData Table
