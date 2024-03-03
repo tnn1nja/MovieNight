@@ -91,7 +91,7 @@ public class Database {
                 ")");
         //Providers Table
         run("CREATE TABLE IF NOT EXISTS Providers (" +
-                "ProviderID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "ProviderID INTEGER PRIMARY KEY," +
                 "Name VARCHAR(64)," +
                 "URL VARCHAR(256)," +
                 "Logo VARCHAR (256)," +
