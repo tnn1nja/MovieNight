@@ -37,12 +37,19 @@ public class APIs {
 
     //Save JSONFilm to Database
     public void saveData(JSONFilm film, String provider){
-        StringBuilder sqlCmd = new StringBuilder();
-        sqlCmd.append("INSERT INTO Films(Title, Synopsis, Year, Cover, Rating, Genre, TmdbID) VALUES(");
-        sqlCmd.append("'").append(film.TITLE).append("',");
-        sqlCmd.append("'").append(film.SYNOPSIS).append("',");
-        sqlCmd.append(film.YEAR).append(",");
-        sqlCmd.append(film.RATING).append(",");
+
+        //Build Film Insert Command
+        String sqlCmd = "INSERT INTO Films(Title, Synopsis, Year, Rating, Genres, TmdbID) VALUES(" +
+                "'" + film.TITLE + "'," +
+                "'" + film.SYNOPSIS + "'," +
+                film.YEAR + "," +
+                film.RATING + "," +
+                "'" + film.GENRES + "'," +
+                "'" + film.TMDBID + "')";
+        db.run(sqlCmd);
+
+        //Download Cover
+        downloadImage(film.COVERHTTP, film.TMDBID);
     }
 
     //Populate the Providers Table (Hardcoded)
