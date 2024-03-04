@@ -56,8 +56,12 @@ public class APIs {
         //People Insert Command
         for(String castMember: film.CAST){
             db.run("INSERT INTO People(Name) VALUES('" + castMember + "')");
+            db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES(SELECT FilmID FROM Films WHERE TmdbID = '"
+                    + film.TMDBID + "'," + "last_insert_rowid(), 0");
         }
         db.run("INSERT INTO PEOPLE(Name) VALUES('" + film.DIRECTOR + "')");
+        db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES(SELECT FilmID FROM Films WHERE TmdbID = '"
+                + film.TMDBID + "'," + "last_insert_rowid(), 1");
 
         //Download Cover
         downloadImage(film.COVERHTTP, film.TMDBID);
