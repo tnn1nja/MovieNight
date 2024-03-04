@@ -41,19 +41,23 @@ public class APIs {
     public void saveData(JSONFilm film, String provider){
 
         //Film Insert Command
-        String sqlCmd = "INSERT INTO Films(Title, Synopsis, Year, Rating, Genres, TmdbID) VALUES(" +
+        db.run("INSERT INTO Films(Title, Synopsis, Year, Rating, Genres, TmdbID) VALUES(" +
                 "'" + film.TITLE + "'," +
                 "'" + film.SYNOPSIS + "'," +
                 film.YEAR + "," +
                 film.RATING + "," +
                 "'" + film.GENRES + "'," +
-                "'" + film.TMDBID + "')";
-        db.run(sqlCmd);
+                "'" + film.TMDBID + "')");
 
         //ProviderLink Insert Command
-        sqlCmd = "INSERT INTO ProvidersLink(FilmID, ProviderID) VALUES(last_insert_rowid(), " +
-                "(SELECT ProviderID FROM Providers WHERE ApiTAG = '" + provider + "'))";
-        db.run(sqlCmd);
+        db.run("INSERT INTO ProvidersLink(FilmID, ProviderID) VALUES(last_insert_rowid(), " +
+                "(SELECT ProviderID FROM Providers WHERE ApiTAG = '" + provider + "'))");
+
+        //People Insert Command
+        for(String castMember: film.CAST){
+            db.run("INSERT INTO People(Name) VALUES('" + castMember + "')");
+        }
+        db.run("INSERT INTO PEOPLE(Name) VALUES('" + film.DIRECTOR + "')");
 
         //Download Cover
         downloadImage(film.COVERHTTP, film.TMDBID);
