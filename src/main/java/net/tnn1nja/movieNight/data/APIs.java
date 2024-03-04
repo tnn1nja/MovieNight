@@ -51,8 +51,9 @@ public class APIs {
         db.run(sqlCmd);
 
         //ProviderLink Insert Command
-        sqlCmd = "INSERT INTO ProviderLink(FilmID, ProviderID) VALUES(last_insert_rowid(), " +
-                "(SELECT ProviderID FROM Providers WHERE ApiTAG = " + provider + "))";
+        sqlCmd = "INSERT INTO ProvidersLink(FilmID, ProviderID) VALUES(last_insert_rowid(), " +
+                "(SELECT ProviderID FROM Providers WHERE ApiTAG = '" + provider + "'))";
+        db.run(sqlCmd);
 
         //Download Cover
         downloadImage(film.COVERHTTP, film.TMDBID);
