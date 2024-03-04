@@ -81,7 +81,8 @@ public class Database {
                 "Year INTEGER DEFAULT -1," +
                 "Rating INTEGER DEFAULT -1," +
                 "Genres VARCHAR(64)," +
-                "TmdbID VARCHAR(64) DEFAULT -1"+
+                "TmdbID VARCHAR(64) DEFAULT -1,"+
+                "UNIQUE(Title,Synopsis,Year,Rating,Genres,TmdbID)" +
                 ")");
         //UserData Table
         run("CREATE TABLE IF NOT EXISTS UserData (" +
@@ -90,7 +91,8 @@ public class Database {
                 "Saved BOOLEAN," +
                 "Liked BOOLEAN," +
                 "Seen BOOLEAN," +
-                "FOREIGN KEY (FilmID) REFERENCES Films(FilmID)" +
+                "FOREIGN KEY (FilmID) REFERENCES Films(FilmID)," +
+                "UNIQUE(FilmID)" +
                 ")");
         //Providers Table
         run("CREATE TABLE IF NOT EXISTS Providers (" +
@@ -98,12 +100,14 @@ public class Database {
                 "Name VARCHAR(64)," +
                 "URL VARCHAR(256)," +
                 "Logo VARCHAR (256)," +
-                "ApiTag VARCHAR (32)" +
+                "ApiTag VARCHAR (32)," +
+                "UNIQUE(Name,URL,Logo,ApiTag)" +
                 ")");
         //People Table
         run("CREATE TABLE IF NOT EXISTS People (" +
                 "PersonID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "Name VARCHAR(128)" +
+                "Name VARCHAR(128)," +
+                "UNIQUE(Name)" +
                 ")");
         //ProvidersLink Table
         run("CREATE TABLE IF NOT EXISTS ProvidersLink (" +
@@ -111,7 +115,8 @@ public class Database {
                 "FilmID INTEGER DEFAULT -1," +
                 "ProviderID INTEGER DEFAULT -1," +
                 "FOREIGN KEY (FilmID) REFERENCES Films(FilmID)," +
-                "FOREIGN KEY (ProviderID) REFERENCES Providers(ProviderID)" +
+                "FOREIGN KEY (ProviderID) REFERENCES Providers(ProviderID)," +
+                "UNIQUE(FilmID,ProviderID)" +
                 ")");
         //PRFLink Table
         run("CREATE TABLE IF NOT EXISTS PRFLink (" +
@@ -120,7 +125,8 @@ public class Database {
                 "PersonID INTEGER DEFAULT -1," +
                 "Role INTEGER DEFAULT -1," +
                 "FOREIGN KEY (FilmID) REFERENCES Films(FilmID)," +
-                "FOREIGN KEY (PersonID) REFERENCES People(PersonID)" +
+                "FOREIGN KEY (PersonID) REFERENCES People(PersonID)," +
+                "UNIQUE(FilmID,PersonID,Role)" +
                 ")");
 
         log.info("Database Tables Successfully Initialised");

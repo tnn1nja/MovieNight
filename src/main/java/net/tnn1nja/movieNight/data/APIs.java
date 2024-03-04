@@ -13,6 +13,7 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -49,22 +50,33 @@ public class APIs {
                 "'" + film.GENRES + "'," +
                 "'" + film.TMDBID + "')");
 
+        //Get FilmID
+        String FilmID = null;
+        ResultSet rs = db.query("SELECT FilmID From Films WHERE TmdbID ='" + film.TMDBID + "'");
+        try {
+            FilmID = rs.getString("FilmID");
+        }catch (SQLException e){
+            log.severe("Failed to Insert Film: " + e.getMessage());
+            e.printStackTrace();
+        }
+
         //ProviderLink Insert Command
-        db.run("INSERT INTO ProvidersLink(FilmID, ProviderID) VALUES(last_insert_rowid(), " +
+        db.run("INSERT INTO ProvidersLink(FilmID, ProviderID) VALUES((" + FilmID +", " +
                 "(SELECT ProviderID FROM Providers WHERE ApiTAG = '" + provider + "'))");
 
         //People Insert Command
         for(String castMember: film.CAST){
             db.run("INSERT INTO People(Name) VALUES('" + castMember + "')");
-            db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES((SELECT FilmID FROM Films WHERE TmdbID='"
-                    + film.TMDBID + "')," + "last_insert_rowid(), 0)");
+            db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES(" + FilmID + "," +
+                    "(SELECT PersonID FROM People WHERE Name = '" + castMember + "'), 0)");
         }
         db.run("INSERT INTO PEOPLE(Name) VALUES('" + film.DIRECTOR + "')");
-        db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES((SELECT FilmID FROM Films WHERE TmdbID='"
-                + film.TMDBID + "')," + "last_insert_rowid(), 1)");
+        db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES(" + FilmID + "," +
+                "(SELECT PersonID FROM People WHERE Name = '" + film.DIRECTOR + "'), 1)");
 
         //Download Cover
         downloadImage(film.COVERHTTP, film.TMDBID);
+
     }
 
     //Populate the Providers Table (Hardcoded)
