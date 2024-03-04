@@ -37,6 +37,7 @@ public class Database {
     //Run SQL Command With Unhandled SQLException
     public void runUnhandled(String prompt) throws SQLException{
         Statement s = conn.createStatement();
+        log.finest("SQL Command Running: " + prompt);
         s.execute(prompt + ";");
         log.fine("SQL Command Successfully Issued");
     }
@@ -55,8 +56,10 @@ public class Database {
     public ResultSet query(String prompt){
         try {
             Statement s = conn.createStatement();
+            log.finest("SQL Query Running: " + prompt);
+            ResultSet rs = s.executeQuery(prompt + ";");
             log.fine("SQL Query Successfully Issued");
-            return s.executeQuery(prompt + ";");
+            return rs;
 
         } catch (SQLException e) {
             log.severe("SQL Query Failed - SQLException: " + e.getMessage());
