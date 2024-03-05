@@ -47,8 +47,12 @@ public class Database {
         try {
             runUnhandled(prompt);
         }catch(SQLException e){
-            log.severe("SQL Command Failed - SQLException: " + e.getMessage());
-            e.printStackTrace();
+            if(e.getMessage().contains("CONSTRAINT_UNIQUE")){
+                log.fine("SQL Command Ignored - Duplicate Record Not Added.");
+            }else {
+                log.warning("SQL Command Failed - SQLException: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
@@ -62,7 +66,7 @@ public class Database {
             return rs;
 
         } catch (SQLException e) {
-            log.severe("SQL Query Failed - SQLException: " + e.getMessage());
+            log.warning("SQL Query Failed - SQLException: " + e.getMessage());
             e.printStackTrace();
             return null;
         }

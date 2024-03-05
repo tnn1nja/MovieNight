@@ -38,76 +38,6 @@ public class APIs {
         saveData(film.get(0), "disney");
     }
 
-    //Save JSONFilm to Database
-    public void saveData(JSONFilm film, String provider){
-
-        //Film Insert Command
-        db.run("INSERT INTO Films(Title, Synopsis, Year, Rating, Genres, TmdbID) VALUES(" +
-                "'" + film.TITLE + "'," +
-                "'" + film.SYNOPSIS + "'," +
-                film.YEAR + "," +
-                film.RATING + "," +
-                "'" + film.GENRES + "'," +
-                "'" + film.TMDBID + "')");
-
-        //Get FilmID
-        String FilmID = null;
-        ResultSet rs = db.query("SELECT FilmID From Films WHERE TmdbID ='" + film.TMDBID + "'");
-        try {
-            FilmID = rs.getString("FilmID");
-        }catch (SQLException e){
-            log.severe("Failed to Insert Film: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        //ProviderLink Insert Command
-        db.run("INSERT INTO ProvidersLink(FilmID, ProviderID) VALUES(" + FilmID +", " +
-                "(SELECT ProviderID FROM Providers WHERE ApiTAG = '" + provider + "'))");
-
-        //People Insert Command
-        for(String castMember: film.CAST){
-            db.run("INSERT INTO People(Name) VALUES('" + castMember + "')");
-            db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES(" + FilmID + "," +
-                    "(SELECT PersonID FROM People WHERE Name = '" + castMember + "'), 0)");
-        }
-        db.run("INSERT INTO PEOPLE(Name) VALUES('" + film.DIRECTOR + "')");
-        db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES(" + FilmID + "," +
-                "(SELECT PersonID FROM People WHERE Name = '" + film.DIRECTOR + "'), 1)");
-
-        //Download Cover
-        downloadImage(film.COVERHTTP, film.TMDBID);
-
-    }
-
-    //Populate the Providers Table (Hardcoded)
-    public void populateProviders(){
-        try {
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(1, 'Netflix', " +
-                    "'https://www.netflix.co.uk/', 'netflix.jpg', 'netflix')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(2, 'Disney Plus', " +
-                    "'https://www.disneyplus.com/', 'disney.jpg', 'disney')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(3, 'Amazon Prime Video', " +
-                    "'https://www.amazon.co.uk/', 'prime.jpg', 'prime.subscription')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(4, 'BBC iPlayer', " +
-                    "'https://bbc.co.uk/iplayer/', 'iplayer.jpg', 'iplayer')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(5, 'All 4', " +
-                    "'https://www.channel4.com/', 'all4.jpg', 'all4')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(6, 'Custom'," +
-                    " null, 'custom.jpg', 'custom')");
-            log.info("Providers Table Populated.");
-
-        }catch (SQLException e){
-            String violation = "[SQLITE_CONSTRAINT_PRIMARYKEY] A PRIMARY KEY constraint failed " +
-                    "(UNIQUE constraint failed: Providers.ProviderID)";
-            if (e.getMessage().equalsIgnoreCase(violation)) {
-                log.fine("Providers Table Already Populated... Skipping");
-            }else{
-                log.severe("Failed to Populate Providers Table - SQLException: " + e.getMessage());
-                e.printStackTrace();
-            }
-        }
-    }
-
 
     //Make API Call
     private String call(String prompt){ //&service=netflix&page=1
@@ -164,6 +94,47 @@ public class APIs {
         return output;
     }
 
+    //Save JSONFilm to Database
+    public void saveData(JSONFilm film, String provider){
+
+        //Film Insert Command
+        db.run("INSERT INTO Films(Title, Synopsis, Year, Rating, Genres, TmdbID) VALUES(" +
+                "'" + film.TITLE + "'," +
+                "'" + film.SYNOPSIS + "'," +
+                film.YEAR + "," +
+                film.RATING + "," +
+                "'" + film.GENRES + "'," +
+                "'" + film.TMDBID + "')");
+
+        //Get FilmID
+        String FilmID = null;
+        ResultSet rs = db.query("SELECT FilmID From Films WHERE TmdbID ='" + film.TMDBID + "'");
+        try {
+            FilmID = rs.getString("FilmID");
+        }catch (SQLException e){
+            log.severe("Failed to Insert Film: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        //ProviderLink Insert Command
+        db.run("INSERT INTO ProvidersLink(FilmID, ProviderID) VALUES(" + FilmID +", " +
+                "(SELECT ProviderID FROM Providers WHERE ApiTAG = '" + provider + "'))");
+
+        //People Insert Command
+        for(String castMember: film.CAST){
+            db.run("INSERT INTO People(Name) VALUES('" + castMember + "')");
+            db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES(" + FilmID + "," +
+                    "(SELECT PersonID FROM People WHERE Name = '" + castMember + "'), 0)");
+        }
+        db.run("INSERT INTO PEOPLE(Name) VALUES('" + film.DIRECTOR + "')");
+        db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES(" + FilmID + "," +
+                "(SELECT PersonID FROM People WHERE Name = '" + film.DIRECTOR + "'), 1)");
+
+        //Download Cover
+        downloadImage(film.COVERHTTP, film.TMDBID);
+
+    }
+
     //Download Image From HTTP Address
     public void downloadImage(String http, String filename){
         try {
@@ -172,10 +143,41 @@ public class APIs {
             Path destination = Path.of(".\\media\\film\\" + filename + ".jpg");
             Files.copy(in, destination, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            log.severe("Failed to Download Image " + e.getMessage());
+            log.warning("Failed to Download Image " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+
+    //Populate the Providers Table (Hardcoded)
+    public void populateProviders(){
+        try {
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(1, 'Netflix', " +
+                    "'https://www.netflix.co.uk/', 'netflix.jpg', 'netflix')");
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(2, 'Disney Plus', " +
+                    "'https://www.disneyplus.com/', 'disney.jpg', 'disney')");
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(3, 'Amazon Prime Video', " +
+                    "'https://www.amazon.co.uk/', 'prime.jpg', 'prime.subscription')");
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(4, 'BBC iPlayer', " +
+                    "'https://bbc.co.uk/iplayer/', 'iplayer.jpg', 'iplayer')");
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(5, 'All 4', " +
+                    "'https://www.channel4.com/', 'all4.jpg', 'all4')");
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(6, 'Custom'," +
+                    " null, 'custom.jpg', 'custom')");
+            log.info("Providers Table Populated.");
+
+        }catch (SQLException e){
+            String violation = "[SQLITE_CONSTRAINT_PRIMARYKEY] A PRIMARY KEY constraint failed " +
+                    "(UNIQUE constraint failed: Providers.ProviderID)";
+            if (e.getMessage().equalsIgnoreCase(violation)) {
+                log.info("Providers Table Already Populated... Skipping");
+            }else{
+                log.severe("Failed to Populate Providers Table - SQLException: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     //Film Data Class
     private static class JSONFilm{
