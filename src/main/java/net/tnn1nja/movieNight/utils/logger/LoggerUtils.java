@@ -11,7 +11,7 @@ public class LoggerUtils  {
     public static void setup(Logger log, Level inputLevel, String path){
         //Base Settings
         log.setUseParentHandlers(false);
-        log.setLevel(inputLevel);
+        log.setLevel(Level.FINEST);
 
         //Console Formatting
         ConsoleHandler ch = new ConsoleHandler();
@@ -22,7 +22,7 @@ public class LoggerUtils  {
         //File Formatting
         try {
             FileHandler fh = new FileHandler(path + "/logfile.txt");
-            fh.setLevel(inputLevel);
+            fh.setLevel(Level.FINEST);
             fh.setFormatter(new FileFormatter());
             log.addHandler(fh);
         }catch(IOException e){
