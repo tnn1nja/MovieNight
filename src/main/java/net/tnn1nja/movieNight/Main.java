@@ -29,7 +29,7 @@ public class Main {
         db.initialise();
 
         //APIs
-        api.test();
+        api.populate();
 
         //Program End
         onClose();
