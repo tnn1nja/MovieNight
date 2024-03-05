@@ -140,7 +140,13 @@ public class APIs {
                     "(SELECT PersonID FROM People WHERE Name = '" + film.DIRECTOR + "'), 1)");
 
             //Download Cover
-            downloadImage(film.COVERHTTP, film.TMDBID);
+            ImageDownloader id = new ImageDownloader(film.COVERHTTP, film.TMDBID);
+            while(!ImageDownloader.ready()){
+                try {
+                    Thread.sleep(10);
+                }catch(InterruptedException ignored){}
+            }
+            id.start();
 
             //Logging
             log.info("'" + film.TITLE + "' Added to the Database");
@@ -149,15 +155,33 @@ public class APIs {
     }
 
     //Download Image From HTTP Address
-    public void downloadImage(String http, String filename){
-        try {
-            URL url = new URL(http);
-            InputStream in = url.openStream();
-            Path destination = Path.of(".\\media\\film\\" + filename + ".jpg");
-            Files.copy(in, destination, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            log.warning("Failed to Download Image " + e.getMessage());
-            e.printStackTrace();
+    private class ImageDownloader extends Thread{
+
+        private static int numThreads = 0;
+        private String http;
+        private String filename;
+
+        public ImageDownloader(String h, String f){
+            http = h;
+            filename = f;
+        }
+
+        public static boolean ready(){
+            return numThreads < 10;
+        }
+
+        public void run(){
+            numThreads++;
+            try {
+                URL url = new URL(http);
+                InputStream in = url.openStream();
+                Path destination = Path.of(".\\media\\film\\" + filename + ".jpg");
+                Files.copy(in, destination, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                log.warning("Failed to Download Image " + e.getMessage());
+                e.printStackTrace();
+            }
+            numThreads--;
         }
     }
 
