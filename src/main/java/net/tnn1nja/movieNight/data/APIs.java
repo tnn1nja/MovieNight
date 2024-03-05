@@ -76,12 +76,12 @@ public class APIs {
         for (Object item: results){
             JSONFilm jf = new JSONFilm();
             JSONObject jo = (JSONObject) item;
-            jf.TITLE = jo.getString("title");
-            jf.SYNOPSIS = jo.getString("overview");
+            jf.TITLE = jo.getString("title").replace("'", "''");
+            jf.SYNOPSIS = jo.getString("overview").replace("'", "''");
             jf.YEAR = jo.getInt("year");
             jf.RATING = jo.getInt("imdbRating");
-            jf.TMDBID = jo.getString("tmdbID");
-            jf.DIRECTOR = jo.getJSONArray("significants").getString(0);
+            jf.TMDBID = jo.getString("tmdbID").replace("'", "''");
+            jf.DIRECTOR = jo.getJSONArray("significants").getString(0).replace("'", "''");
 
             StringBuilder sb = new StringBuilder();
             for(Object genre: jo.getJSONArray("genres")){
@@ -92,7 +92,7 @@ public class APIs {
 
             jf.CAST = new ArrayList<String>();
             for(Object castMember: jo.getJSONArray("cast")){
-                jf.CAST.add((String) castMember);
+                jf.CAST.add(((String) castMember).replace("'", "''"));
             }
 
             jf.COVERHTTP = jo.getJSONObject("posterURLs").getString("185");
@@ -141,6 +141,9 @@ public class APIs {
 
             //Download Cover
             downloadImage(film.COVERHTTP, film.TMDBID);
+
+            //Logging
+            log.info("'" + film.TITLE + "' Added to the Database");
         }
 
     }
