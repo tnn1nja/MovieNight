@@ -46,9 +46,6 @@ public class APIs {
 
             //Find and Cap Number of Pages
             int numPages = jo.getInt("total_pages");
-            if(numPages>3){
-                numPages = 3;
-            }
 
             //Page 1-n Logic
             for(int i=2; i<numPages+1; i++){
