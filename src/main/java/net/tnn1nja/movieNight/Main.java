@@ -29,9 +29,7 @@ public class Main {
         db.initialise();
 
         //APIs
-        //api.populate();
-
-        api.call("&service=prime&page=1");
+        api.populate();
 
         //Program End
         onClose();

@@ -26,7 +26,7 @@ public class APIs {
     private static final String address = "https://streaming-availability.p.rapidapi.com/search/ultra";
     private static final String APIKey = "55a3606031mshcf4633bebae51abp130e52jsnc5476f35f166";
 
-    static final String[] providers = {"netflix", "disney", "prime.subscription", "iplayer", "all4"};
+    static final String[] providers = {"netflix", "disney", "iplayer", "all4"};
     public boolean PREMIUM = false;
 
 
@@ -213,13 +213,11 @@ public class APIs {
                     "'https://www.netflix.co.uk/', 'netflix.jpg', 'netflix')");
             db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(2, 'Disney Plus', " +
                     "'https://www.disneyplus.com/', 'disney.jpg', 'disney')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(3, 'Amazon Prime Video', " +
-                    "'https://www.amazon.co.uk/', 'prime.jpg', 'prime.subscription')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(4, 'BBC iPlayer', " +
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(3, 'BBC iPlayer', " +
                     "'https://bbc.co.uk/iplayer/', 'iplayer.jpg', 'iplayer')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(5, 'All 4', " +
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(4, 'All 4', " +
                     "'https://www.channel4.com/', 'all4.jpg', 'all4')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(6, 'Custom'," +
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(5, 'Custom'," +
                     " null, 'custom.jpg', 'custom')");
             log.info("Providers Table Populated.");
 
