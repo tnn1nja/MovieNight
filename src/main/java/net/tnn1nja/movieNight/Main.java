@@ -28,9 +28,6 @@ public class Main {
         db.connect();
         db.initialise();
 
-        //APIs
-        api.populateDatabase();
-
         //Program End
         onClose();
 

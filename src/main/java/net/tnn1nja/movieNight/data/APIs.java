@@ -41,11 +41,8 @@ public class APIs {
                     "(SELECT ProviderID FROM Providers WHERE ApiTag='" + provider + "')");
             log.info("Provider Data For '"+ provider + "' Deleted.");
 
-            //Page 1 Logic
-            JSONObject jo = populatePage(provider, 1);
-
-            //Find and Cap Number of Pages
-            int numPages = jo.getInt("total_pages");
+            //Page 1 Logic + Find Number of Pages
+            int numPages = populatePage(provider, 1);
 
             //Page 1-n Logic
             for(int i=2; i<numPages+1; i++){
@@ -60,7 +57,7 @@ public class APIs {
 
 
     //Parse a Page from API to Database
-    private JSONObject populatePage(String provider,  int i){
+    private int populatePage(String provider,  int i){
         //Concatenate API Prompt
         String prompt = "&services=" + provider + "&page=" + i;
         log.finest("Api Prompt: " + prompt);
@@ -70,10 +67,11 @@ public class APIs {
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             saveData(extractData(jsonObject), provider); //Save Data Works with Empty List
-            log.info("Completed '" + provider + "' Page " + i + " call");
+            int numPages = jsonObject.getInt("total_pages");
+            log.info("Completed '" + provider + "' Page " + i + "/" + numPages + " call");
 
             //Output the Parsed JSON Object
-            return jsonObject;
+            return numPages;
 
         //Log if it Fails
         }catch(Exception e){
@@ -86,7 +84,7 @@ public class APIs {
         }
 
         //Catch All Return
-        return null;
+        return -1;
     }
 
     //Make API Call (prompt = "&service=netflix&page=1")
