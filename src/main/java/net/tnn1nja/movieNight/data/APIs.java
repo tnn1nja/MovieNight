@@ -241,7 +241,6 @@ public class APIs {
     //Populate the Providers Table (Hardcoded)
     private void populateProviders(){
         try {
-
             //NETFLIX
             db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(1, 'Netflix', " +
                     "'https://www.netflix.co.uk/', 'netflix')");
@@ -275,7 +274,6 @@ public class APIs {
                 log.severe("Failed to Populate Providers Table - SQLException: " + e.getMessage());
                 e.printStackTrace();
             }
-
         }
     }
 
