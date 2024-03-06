@@ -1,6 +1,7 @@
 package net.tnn1nja.movieNight.data;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -107,30 +108,34 @@ public class APIs {
 
         JSONArray results = jsonObject.getJSONArray("results");
         for (Object item: results){
-            JSONFilm jf = new JSONFilm();
-            JSONObject jo = (JSONObject) item;
-            jf.TITLE = jo.getString("title").replace("'", "''");
-            jf.SYNOPSIS = jo.getString("overview").replace("'", "''");
-            jf.YEAR = jo.getInt("year");
-            jf.RATING = jo.getInt("imdbRating");
-            jf.TMDBID = jo.getString("tmdbID").replace("'", "''");
-            JSONArray significants = jo.getJSONArray("significants");
-            jf.DIRECTOR = significants.getString(0).replace("'", "''");
+            try {
+                JSONFilm jf = new JSONFilm();
+                JSONObject jo = (JSONObject) item;
+                jf.TITLE = jo.getString("title").replace("'", "''");
+                jf.SYNOPSIS = jo.getString("overview").replace("'", "''");
+                jf.YEAR = jo.getInt("year");
+                jf.RATING = jo.getInt("imdbRating");
+                jf.TMDBID = jo.getString("tmdbID").replace("'", "''");
+                JSONArray significants = jo.getJSONArray("significants");
+                jf.DIRECTOR = significants.getString(0).replace("'", "''");
 
-            StringBuilder sb = new StringBuilder();
-            for(Object genre: jo.getJSONArray("genres")){
-                int i = (int) genre;
-                sb.append(i).append(",");
+                StringBuilder sb = new StringBuilder();
+                for (Object genre : jo.getJSONArray("genres")) {
+                    int i = (int) genre;
+                    sb.append(i).append(",");
+                }
+                jf.GENRES = sb.toString();
+
+                jf.CAST = new ArrayList<String>();
+                for (Object castMember : jo.getJSONArray("cast")) {
+                    jf.CAST.add(((String) castMember).replace("'", "''"));
+                }
+
+                jf.COVERHTTP = jo.getJSONObject("posterURLs").getString("185");
+                output.add(jf);
+            }catch (JSONException | NullPointerException e){
+                log.warning("Film Data Incomplete, Skipping...");
             }
-            jf.GENRES = sb.toString();
-
-            jf.CAST = new ArrayList<String>();
-            for(Object castMember: jo.getJSONArray("cast")){
-                jf.CAST.add(((String) castMember).replace("'", "''"));
-            }
-
-            jf.COVERHTTP = jo.getJSONObject("posterURLs").getString("185");
-            output.add(jf);
         }
 
         return output;
