@@ -30,7 +30,7 @@ public class APIs {
 
 
     //Populate the Database
-    public void populate(){
+    public void populateDatabase(){
         //Populate the Providers Table.
         populateProviders();
 
