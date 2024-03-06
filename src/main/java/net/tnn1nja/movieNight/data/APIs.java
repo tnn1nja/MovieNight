@@ -80,7 +80,7 @@ public class APIs {
 
 
     //Make API Call (prompt = "&service=netflix&page=1")
-    public String call(String prompt){
+    private String call(String prompt){
         HttpResponse<String> response = null;
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -203,7 +203,6 @@ public class APIs {
         }
     }
 
-
     //Populate the Providers Table (Hardcoded)
     private void populateProviders(){
         try {
@@ -230,6 +229,7 @@ public class APIs {
             }
         }
     }
+
 
     //Film Data Class
     private static class JSONFilm{
