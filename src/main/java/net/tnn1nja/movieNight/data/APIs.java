@@ -27,7 +27,6 @@ public class APIs {
     private static final String APIKey = "55a3606031mshcf4633bebae51abp130e52jsnc5476f35f166";
 
     static final String[] providers = {"netflix", "disney", "iplayer", "all4"};
-    public boolean PREMIUM = false;
 
 
     //Populate the Database
@@ -36,7 +35,6 @@ public class APIs {
         populateProviders();
 
         //Iterate through every provider
-        log.info("Populating Database with PREMIUM=" + PREMIUM);
         for(String provider: providers){
 
             //Page 1 Logic
@@ -44,7 +42,7 @@ public class APIs {
 
             //Find and Cap Number of Pages
             int numPages = jo.getInt("total_pages");
-            if((numPages>3)&&!PREMIUM){
+            if(numPages>3){
                 numPages = 3;
             }
 
@@ -209,16 +207,16 @@ public class APIs {
     //Populate the Providers Table (Hardcoded)
     private void populateProviders(){
         try {
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(1, 'Netflix', " +
-                    "'https://www.netflix.co.uk/', 'netflix.jpg', 'netflix')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(2, 'Disney Plus', " +
-                    "'https://www.disneyplus.com/', 'disney.jpg', 'disney')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(3, 'BBC iPlayer', " +
-                    "'https://bbc.co.uk/iplayer/', 'iplayer.jpg', 'iplayer')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(4, 'All 4', " +
-                    "'https://www.channel4.com/', 'all4.jpg', 'all4')");
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, Logo, ApiTag) VALUES(5, 'Custom'," +
-                    " null, 'custom.jpg', 'custom')");
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(1, 'Netflix', " +
+                    "'https://www.netflix.co.uk/', 'netflix')");
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(2, 'Disney Plus', " +
+                    "'https://www.disneyplus.com/', 'disney')");
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(3, 'BBC iPlayer', " +
+                    "'https://bbc.co.uk/iplayer/', 'iplayer')");
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(4, 'All 4', " +
+                    "'https://www.channel4.com/','all4')");
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(5, 'Custom'," +
+                    " null, 'custom')");
             log.info("Providers Table Populated.");
 
         }catch (SQLException e){

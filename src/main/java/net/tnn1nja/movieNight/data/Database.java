@@ -103,9 +103,8 @@ public class Database {
                 "ProviderID INTEGER PRIMARY KEY," +
                 "Name VARCHAR(64)," +
                 "URL VARCHAR(256)," +
-                "Logo VARCHAR (256)," +
                 "ApiTag VARCHAR (32)," +
-                "UNIQUE(Name,URL,Logo,ApiTag)" +
+                "UNIQUE(Name,URL,ApiTag)" +
                 ")");
         //People Table
         run("CREATE TABLE IF NOT EXISTS People (" +

@@ -21,7 +21,7 @@ public class Main {
     public static void onStart(){
 
         //Logger Setup
-        LoggerUtils.setup(log, Level.FINE, mainPath);
+        LoggerUtils.setup(log, Level.INFO, mainPath);
         log.info("Logger Started.");
 
         //Database Setup
