@@ -25,7 +25,6 @@ public class APIs {
     //Constants
     private static final String address = "https://streaming-availability.p.rapidapi.com/search/ultra";
     private static final String APIKey = "55a3606031mshcf4633bebae51abp130e52jsnc5476f35f166";
-
     static final String[] providers = {"netflix", "disney", "iplayer", "all4"};
 
 
@@ -55,24 +54,33 @@ public class APIs {
             for(int i=2; i<numPages+1; i++){
                 populatePage(provider, i);
             }
+
         }
 
+        //Logging
         log.info("Database Successfully Populated.");
     }
 
+
     //Parse a Page from API to Database
     private JSONObject populatePage(String provider,  int i){
+        //Concatenate API Prompt
         String prompt = "&services=" + provider + "&page=" + i;
         log.finest("Api Prompt: " + prompt);
         String jsonString = call(prompt);
+
+        //Try to Parse the Data
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
-            saveData(extractData(jsonObject), provider);
+            saveData(extractData(jsonObject), provider); //Save Data Works with Empty List
             log.info("Completed '" + provider + "' Page " + i + " call");
 
+            //Output the Parsed JSON Object
             return jsonObject;
+
+        //Log if it Fails
         }catch(Exception e){
-            if(jsonString.length() < 100) {
+            if(jsonString.length() < 100) { //Only Show Useful API Responses.
                 log.severe("API Parser Failed: " + jsonString);
             }else{
                 log.severe("API Parser Failed.");
@@ -80,14 +88,16 @@ public class APIs {
             e.printStackTrace();
         }
 
+        //Catch All Return
         return null;
     }
 
-
     //Make API Call (prompt = "&service=netflix&page=1")
     private String call(String prompt){
+        //Create Object to Hold Reponse
         HttpResponse<String> response = null;
         try {
+            //Build API Call
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(address + "?country=gb&type=movie&output_language=en&language=en" +
                             "&order_by=imdb_rating&desc=true" + prompt))
@@ -95,13 +105,16 @@ public class APIs {
                     .header("X-RapidAPI-Host", "streaming-availability.p.rapidapi.com")
                     .method("GET", HttpRequest.BodyPublishers.noBody())
                     .build();
+            //Send API Call
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
+        //Log Failure
         }catch(InterruptedException | IOException e){
             log.severe("API Request Failed: " + e.getMessage());
             e.printStackTrace();
         }
 
+        //Return API Response
         return response.body();
     }
 
@@ -109,9 +122,12 @@ public class APIs {
     private ArrayList<JSONFilm> extractData(JSONObject jsonObject){
         ArrayList<JSONFilm> output = new ArrayList<JSONFilm>();
 
+        //For Each Film in the Input
         JSONArray results = jsonObject.getJSONArray("results");
         for (Object item: results){
+            //Try to Extract its Data
             try {
+                //Simple Extraction
                 JSONFilm jf = new JSONFilm();
                 JSONObject jo = (JSONObject) item;
                 jf.TITLE = jo.getString("title").replace("'", "''");
@@ -120,7 +136,9 @@ public class APIs {
                 jf.RATING = jo.getInt("imdbRating");
                 jf.TMDBID = jo.getString("tmdbID").replace("'", "''");
                 jf.DIRECTOR = jo.getJSONArray("significants").getString(0).replace("'", "''");
+                jf.COVERHTTP = jo.getJSONObject("posterURLs").getString("185");
 
+                //Create Genres String
                 StringBuilder sb = new StringBuilder();
                 for (Object genre : jo.getJSONArray("genres")) {
                     int i = (int) genre;
@@ -131,26 +149,32 @@ public class APIs {
                 }
                 jf.GENRES = sb.toString();
 
+                //Create Cast Array
                 jf.CAST = new ArrayList<String>();
                 for (Object castMember : jo.getJSONArray("cast")) {
                     jf.CAST.add(((String) castMember).replace("'", "''"));
                 }
 
-                jf.COVERHTTP = jo.getJSONObject("posterURLs").getString("185");
+                //Add To Output Array
                 output.add(jf);
 
+            //If Data is Missing (Cant be retrieved, returns null)
             }catch (JSONException | NullPointerException e){
                 log.warning("Film Data Incomplete, Skipping...");
             }
         }
 
+        //Return Parsed Data
         return output;
     }
 
     //Save JSONFilm to Database
     private void saveData(ArrayList<JSONFilm> films, String provider){
 
+        //Contain Within One Transaction (for efficiency)
         db.run("begin");
+
+        //For Every Film Inputted...
         for(JSONFilm film: films) {
             //Film Insert Command
             db.run("INSERT INTO Films(Title, Synopsis, Year, Rating, Genres, TmdbID) VALUES(" +
@@ -191,52 +215,72 @@ public class APIs {
             //Logging
             log.info("'" + film.TITLE + "' Updated/Added to the Database");
         }
+
+        //Send Transaction
         db.run("commit");
 
     }
 
     //Download Image From HTTP Address
     private void downloadImage(String http, String filename){
+        //Stream Data from HTTP Address to File
         try {
             URL url = new URL(http);
             InputStream in = url.openStream();
             Path destination = Path.of(".\\media\\film\\" + filename + ".jpg");
             Files.copy(in, destination, StandardCopyOption.REPLACE_EXISTING);
+
+        //Log Failure
         } catch (IOException e) {
             log.warning("Failed to Download Image " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+
     //Populate the Providers Table (Hardcoded)
     private void populateProviders(){
         try {
+
+            //NETFLIX
             db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(1, 'Netflix', " +
                     "'https://www.netflix.co.uk/', 'netflix')");
+            //DISNEY PLUS
             db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(2, 'Disney Plus', " +
                     "'https://www.disneyplus.com/', 'disney')");
+            //IPLAYER
             db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(3, 'BBC iPlayer', " +
                     "'https://bbc.co.uk/iplayer/', 'iplayer')");
+            //ALL4
             db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(4, 'All 4', " +
                     "'https://www.channel4.com/','all4')");
+            //CUSTOM
             db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(5, 'Custom'," +
                     " null, 'custom')");
+
+            //Logging
             log.info("Providers Table Populated.");
 
+        //In Case of Failure
         }catch (SQLException e){
+
+            //Primary Key Constraint Violation Means The Algorithm has Already Run
             String violation = "[SQLITE_CONSTRAINT_PRIMARYKEY] A PRIMARY KEY constraint failed " +
                     "(UNIQUE constraint failed: Providers.ProviderID)";
             if (e.getMessage().equalsIgnoreCase(violation)) {
                 log.info("Providers Table Already Populated... Skipping");
+
+            //Log Failure
             }else{
                 log.severe("Failed to Populate Providers Table - SQLException: " + e.getMessage());
                 e.printStackTrace();
             }
+
         }
     }
 
 
-    //Film Data Class
+    //Film Data Class (Non-Type Specific Array)
     private static class JSONFilm{
         String TITLE;
         String SYNOPSIS;

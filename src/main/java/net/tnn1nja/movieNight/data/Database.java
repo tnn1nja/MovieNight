@@ -47,6 +47,7 @@ public class Database {
         try {
             runUnhandled(prompt);
         }catch(SQLException e){
+            //Catch Unique Constraint Violation From API Class
             if(e.getMessage().contains("CONSTRAINT_UNIQUE")){
                 log.fine("SQL Command Ignored - Duplicate Record Not Added.");
             }else {
@@ -73,7 +74,7 @@ public class Database {
     }
 
 
-    //Generate Tables (Hardcoded)
+    //Create Tables (Hardcoded)
     public void initialise(){
         //Set Constants
         run("PRAGMA foreign_keys=ON");
@@ -132,6 +133,7 @@ public class Database {
                 "UNIQUE(FilmID,PersonID,Role)" +
                 ")");
 
+        //Logging
         log.info("Database Tables Successfully Initialised");
     }
 }
