@@ -59,16 +59,16 @@ public class APIs {
     //Parse a Page from API to Database
     private JSONObject populatePage(String provider,  int i){
         String prompt = "&service=" + provider + "&page=" + i;
+        log.finest("Api Prompt: " + prompt);
         String jsonString = call(prompt);
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             saveData(extractData(jsonObject), provider);
             log.info("Completed '" + provider + "' Page " + i + " call");
-            log.finest("Api Prompt: " + prompt);
 
             return jsonObject;
         }catch(Exception e){
-            log.severe("JSON Parser Failed: " + jsonString);
+            log.severe("API Parser Failed: " + jsonString);
         }
 
         return null;
