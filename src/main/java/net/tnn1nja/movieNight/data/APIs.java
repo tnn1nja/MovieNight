@@ -105,6 +105,7 @@ public class APIs {
     //Save JSONFilm to Database
     public void saveData(ArrayList<JSONFilm> films, String provider){
 
+        db.run("begin");
         for(JSONFilm film: films) {
             //Film Insert Command
             db.run("INSERT INTO Films(Title, Synopsis, Year, Rating, Genres, TmdbID) VALUES(" +
@@ -145,6 +146,7 @@ public class APIs {
             //Logging
             log.info("'" + film.TITLE + "' Added to the Database");
         }
+        db.run("commit");
 
     }
 
