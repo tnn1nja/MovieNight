@@ -37,6 +37,11 @@ public class APIs {
         //Iterate through every provider
         for(String provider: providers){
 
+            //Clean ProvidersLink
+            db.run("DELETE FROM ProvidersLink WHERE ProviderID=" +
+                    "(SELECT ProviderID FROM Providers WHERE ApiTag='" + provider + "')");
+            log.info("Provider Data For '"+ provider + "' Deleted.");
+
             //Page 1 Logic
             JSONObject jo = populatePage(provider, 1);
 
@@ -184,7 +189,7 @@ public class APIs {
             downloadImage(film.COVERHTTP, film.TMDBID);
 
             //Logging
-            log.info("'" + film.TITLE + "' Added to the Database");
+            log.info("'" + film.TITLE + "' Updated/Added to the Database");
         }
         db.run("commit");
 
