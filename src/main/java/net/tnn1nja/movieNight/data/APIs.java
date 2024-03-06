@@ -82,7 +82,7 @@ public class APIs {
 
 
     //Make API Call (prompt = "&service=netflix&page=1")
-    private String call(String prompt){
+    public String call(String prompt){
         HttpResponse<String> response = null;
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -116,13 +116,15 @@ public class APIs {
                 jf.YEAR = jo.getInt("year");
                 jf.RATING = jo.getInt("imdbRating");
                 jf.TMDBID = jo.getString("tmdbID").replace("'", "''");
-                JSONArray significants = jo.getJSONArray("significants");
-                jf.DIRECTOR = significants.getString(0).replace("'", "''");
+                jf.DIRECTOR = jo.getJSONArray("significants").getString(0).replace("'", "''");
 
                 StringBuilder sb = new StringBuilder();
                 for (Object genre : jo.getJSONArray("genres")) {
                     int i = (int) genre;
                     sb.append(i).append(",");
+                }
+                if(sb.length() == 0){
+                    throw new NullPointerException();
                 }
                 jf.GENRES = sb.toString();
 
@@ -133,6 +135,7 @@ public class APIs {
 
                 jf.COVERHTTP = jo.getJSONObject("posterURLs").getString("185");
                 output.add(jf);
+
             }catch (JSONException | NullPointerException e){
                 log.warning("Film Data Incomplete, Skipping...");
             }
