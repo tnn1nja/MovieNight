@@ -22,7 +22,7 @@ import static net.tnn1nja.movieNight.Main.*;
 public class APIs {
 
     //Constants
-    private static final String address = "https://streaming-availability.p.rapidapi.com/search/basic";
+    private static final String address = "https://streaming-availability.p.rapidapi.com/search/ultra";
     private static final String APIKey = "55a3606031mshcf4633bebae51abp130e52jsnc5476f35f166";
 
     static final String[] providers = {"netflix", "disney", "prime.subscription", "iplayer", "all4"};
@@ -58,7 +58,7 @@ public class APIs {
 
     //Parse a Page from API to Database
     private JSONObject populatePage(String provider,  int i){
-        String prompt = "&service=" + provider + "&page=" + i;
+        String prompt = "&services=" + provider + "&page=" + i;
         log.finest("Api Prompt: " + prompt);
         String jsonString = call(prompt);
         try {
@@ -68,7 +68,12 @@ public class APIs {
 
             return jsonObject;
         }catch(Exception e){
-            log.severe("API Parser Failed: " + jsonString);
+            if(jsonString.length() < 100) {
+                log.severe("API Parser Failed: " + jsonString);
+            }else{
+                log.severe("API Parser Failed.");
+            }
+            e.printStackTrace();
         }
 
         return null;
@@ -81,7 +86,7 @@ public class APIs {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(address + "?country=gb&type=movie&output_language=en&language=en" +
-                            "&order_by=popularity_alltime" + prompt))
+                            "&order_by=imdb_rating&desc=true" + prompt))
                     .header("X-RapidAPI-Key", APIKey)
                     .header("X-RapidAPI-Host", "streaming-availability.p.rapidapi.com")
                     .method("GET", HttpRequest.BodyPublishers.noBody())
@@ -109,7 +114,8 @@ public class APIs {
             jf.YEAR = jo.getInt("year");
             jf.RATING = jo.getInt("imdbRating");
             jf.TMDBID = jo.getString("tmdbID").replace("'", "''");
-            jf.DIRECTOR = jo.getJSONArray("significants").getString(0).replace("'", "''");
+            JSONArray significants = jo.getJSONArray("significants");
+            jf.DIRECTOR = significants.getString(0).replace("'", "''");
 
             StringBuilder sb = new StringBuilder();
             for(Object genre: jo.getJSONArray("genres")){
