@@ -12,7 +12,7 @@ public class Main {
     //Constants
     public static String mainPath = "D:/Coding/WBS/MovieNight/data"; //RELATIVE PATH LATER
 
-    //Modules/Singletons
+    //Modules and Singletons
     public static Database db = new Database();
     public static APIs api = new APIs();
     public static Logger log = Logger.getLogger("mnLogger");
