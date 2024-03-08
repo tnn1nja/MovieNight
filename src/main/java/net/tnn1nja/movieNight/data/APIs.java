@@ -227,7 +227,7 @@ public class APIs {
 
         //Log Failure
         } catch (IOException e) {
-            log.warning("Failed to Download Image " + e.getMessage());
+            log.severe("Failed to Download Image " + e.getMessage());
             e.printStackTrace();
         }
     }

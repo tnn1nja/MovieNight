@@ -27,28 +27,15 @@ public class Main {
         log.info("Logger Started.");
 
         //Database Setup
-        //db.connect();
-        //db.initialise();
+        db.connect();
+        db.initialise();
 
         //Testing
-        Film testFilm = new Film(1, "Epic Romance", "Some people fight then fall in love", 2017,
-                13, new int[]{12, 14}, "#1", false, false, false, "Famous Man",
-                new String[]{"Actor Johnson", "John Actorson"}, new int[]{1});
-
-        log.info(testFilm.TITLE);
-        log.info(testFilm.SYNOPSIS);
-        log.info(String.valueOf(testFilm.YEAR));
-        log.info(String.valueOf(testFilm.RATING));
-        log.info(Arrays.toString(testFilm.GENRES));
-        log.info(testFilm.TMDBID);
-        log.info(String.valueOf(testFilm.SAVED));
-        log.info(String.valueOf(testFilm.LIKED));
-        log.info(String.valueOf(testFilm.SEEN));
-        log.info(testFilm.DIRECTOR);
-        log.info(Arrays.toString(testFilm.CAST));
-        log.info(Arrays.toString(testFilm.PROVIDERS));
-        log.info(testFilm.getRelativeCoverPath());
-
+        Film test = new Film(1,"Pulp Fiction", null, -1, -1, null,
+                null, null, null, null);
+        test.loadUserData();
+        test.SAVED = true;
+        test.saveUserData();
 
         //Program End
         onClose();
@@ -57,7 +44,7 @@ public class Main {
 
     //On Program End
     public static void onClose(){
-        //db.close();
+        db.close();
         System.exit(0);
     }
 
