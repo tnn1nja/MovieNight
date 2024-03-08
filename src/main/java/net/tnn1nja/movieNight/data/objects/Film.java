@@ -2,6 +2,7 @@ package net.tnn1nja.movieNight.data.objects;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static net.tnn1nja.movieNight.Main.db;
 import static net.tnn1nja.movieNight.Main.log;
@@ -32,7 +33,7 @@ public class Film {
 
     //Constructor
     public Film(int Id, String Title, String Synopsis, int Year, int Rating, int[] Genres,
-                String TmdbId, String Director, String[] Cast, int[] Providers){
+                String TmdbID, String Director, String[] Cast, int[] Providers){
 
         //Assign Values
         ID = Id;
@@ -41,13 +42,47 @@ public class Film {
         YEAR = Year;
         RATING = Rating;
         GENRES = Genres;
-        TMDBID = TmdbId;
+        TMDBID = TmdbID;
         DIRECTOR = Director;
         CAST = Cast;
         PROVIDERS = Providers;
 
         //Load UserData
         loadUserData();
+
+    }
+
+    //Get Film by ID
+    public Film getFilm(int id){
+
+        int Year;
+        int Rating;
+        String inGenres;
+        String Title;
+        String Synopsis;
+        String TmdbID;
+
+        ResultSet rs = db.query("SELECT * FROM Films WHERE FilmID = " + id);
+        try {
+            Title = rs.getString("Title");
+            Synopsis = rs.getString("Synopsis");
+            Year = rs.getInt("Year");
+            Rating = rs.getInt("Rating");
+            inGenres = rs.getString("Genres");
+            TmdbID = rs.getString("TmdbID");
+        }catch(SQLException e){
+            log.severe("Failed to extract Film Data: " + e.getMessage());
+            e.printStackTrace();
+            return null; //REMOVES NULL POINTER EXCEPTION!! DOCUMENT
+        }
+
+        String[] gSplit = inGenres.split(",");
+        int[] Genres = new int[gSplit.length-1];
+        for(int i = 0; i<gSplit.length; i++){
+            Genres[i] = Integer.parseInt(gSplit[i]);
+        }
+
+        return new Film(id, Title, Synopsis, Year, Rating, Genres, TmdbID, null, null, null);
 
     }
 
@@ -113,7 +148,8 @@ public class Film {
 
         //Failed to Parse ResultSet
         }catch(SQLException e){
-            log.severe("Failed Retrieve Values UserData ResultSet");
+            log.severe("Failed Retrieve Values UserData ResultSet: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
