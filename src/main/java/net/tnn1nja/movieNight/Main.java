@@ -1,8 +1,6 @@
 package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.data.APIs;
-import net.tnn1nja.movieNight.data.objects.Genre;
-import net.tnn1nja.movieNight.data.objects.Role;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
 import java.util.logging.Level;
@@ -30,13 +28,6 @@ public class Main {
         //db.connect();
         //db.initialise();
 
-        //Testing
-        log.info("Cast = "+ Role.CAST);
-        log.info("Director = " + Role.DIRECTOR);
-        log.info("Genre Count = " + Genre.getCount());
-        log.info("Random Genre = " + Genre.getRandom());
-        log.info("Adventure = " + Genre.get(12));
-
         //Program End
         onClose();
 
@@ -44,7 +35,7 @@ public class Main {
 
     //On Program End
     public static void onClose(){
-        db.close();
+        //db.close();
         System.exit(0);
     }
 

@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Genre {
+
     //Genre Index
-    private static HashMap<Integer, String> index = new HashMap<Integer, String>();
+    private static final HashMap<Integer, String> index = new HashMap<Integer, String>();
     static{
         index.put(12, "Adventure");
         index.put(14, "Fantasy");
@@ -45,4 +46,5 @@ public class Genre {
     public static String get(int id){
         return index.get(id);
     }
+
 }
