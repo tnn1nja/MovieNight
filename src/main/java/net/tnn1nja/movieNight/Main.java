@@ -34,8 +34,8 @@ public class Main {
         Film test = new Film(1,"Pulp Fiction", null, -1, -1, null,
                 null, null, null, null);
         test.loadUserData();
-        test.SAVED = true;
-        test.saveUserData();
+        log.info(test.SAVED.toString());
+        log.info(test.SEEN.toString());
 
         //Program End
         onClose();

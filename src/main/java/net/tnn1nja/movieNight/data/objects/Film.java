@@ -63,20 +63,25 @@ public class Film {
         //Run Query
         ResultSet rs = db.query("SELECT * FROM UserData WHERE FilmID = " + ID);
 
-        //Record Found
-        try {
-            rs.next();
-            SAVED = rs.getBoolean("Saved");
-            LIKED = rs.getBoolean("Liked");
-            SEEN = rs.getBoolean("Seen");
-            log.info("Loaded UserData for '" + TITLE + "'");
+        //Parse ResultSet
+        try{
+            //Record Found
+            if(rs.next()) {
+                SAVED = rs.getBoolean("Saved");
+                LIKED = rs.getBoolean("Liked");
+                SEEN = rs.getBoolean("Seen");
+                log.info("Loaded UserData for '" + TITLE + "'");
+            //No Record Found
+            }else{
+                log.warning("Failed to Load UserData for '" + TITLE + "', Assigning Defaults...");
+                SAVED = false;
+                LIKED = false;
+                SEEN = false;
+            }
 
-        //No Record Found
+        //Failed to Parse ResultSet
         }catch(SQLException e){
-            log.warning("Failed to Load UserData for '" + TITLE + "', Assigning Defaults...");
-            SAVED = false;
-            LIKED = false;
-            SEEN = false;
+            log.severe("Failed Retrieve Values UserData ResultSet");
         }
     }
 
@@ -91,7 +96,7 @@ public class Film {
 
         //Otherwise Skip Saving
         }else{
-            log.info("Not Saving Userdata for '" + TITLE + "', All Values are Default");
+            log.warning("Not Saving Userdata for '" + TITLE + "', All Values are Default");
         }
     }
 
