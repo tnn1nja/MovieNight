@@ -1,10 +1,8 @@
 package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.data.APIs;
-import net.tnn1nja.movieNight.data.objects.Film;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.tnn1nja.movieNight.data.Database;
@@ -29,13 +27,6 @@ public class Main {
         //Database Setup
         db.connect();
         db.initialise();
-
-        //Testing
-        Film test = new Film(1,"Pulp Fiction", null, -1, -1, null,
-                null, null, null, null);
-        test.loadUserData();
-        log.info(test.SAVED.toString());
-        log.info(test.SEEN.toString());
 
         //Program End
         onClose();
