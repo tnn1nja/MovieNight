@@ -30,7 +30,7 @@ public class Film {
     private boolean LIKED = false;
 
     private final int[] PROVIDERS;
-    private boolean OWNED = false;
+    private boolean HOME = false;
 
 
     //Constructor
@@ -51,12 +51,12 @@ public class Film {
         //Assign Providers
         Arrays.sort(Providers);
         for(int i: Providers){
-            if (i == 5) { //REPLACE WITH PROVIDER.OWNED
-                OWNED = true;
+            if (i == 5) { //REPLACE WITH PROVIDER.HOME
+                HOME = true;
                 break;
             }
         }
-        if(OWNED){
+        if(HOME){
             PROVIDERS = new int[Providers.length-1];
             //Copy Values From Providers to PROVIDERS (Excluding Last Value)
             System.arraycopy(Providers, 0, PROVIDERS, 0, PROVIDERS.length);
@@ -182,7 +182,17 @@ public class Film {
     public String getTMDBID(){return TMDBID;}
     public String getDirector(){return DIRECTOR;}
     public String[] getCast(){return CAST;}
-    public int[] getProviders(){return PROVIDERS;}
+    public int[] getProviders() {
+        if(HOME){
+            int[] Providers = new int[PROVIDERS.length+1];
+            System.arraycopy(PROVIDERS, 0, Providers, 0, PROVIDERS.length);
+            Providers[Providers.length-1] = 5; //REPLACE WITH PROVIDER.HOME
+            return Providers;
+        }
+        else {
+            return PROVIDERS;
+        }
+    }
 
     //Setters
     public void setSaved(boolean value){
@@ -198,6 +208,16 @@ public class Film {
     public void setLiked(boolean value){
         LIKED = value;
         saveUserData();
+    }
+
+    //REPLACE WITH PROVIDER.HOME
+    public void setHome(boolean value){
+        HOME = value;
+        if(HOME){
+            db.run("INSERT OR REPLACE INTO ProvidersLink(FilmID,ProviderID) VALUES(" + ID + "," + 5 + ")");
+        }else{
+            db.run("DELETE FROM ProvidersLink WHERE FilmID = " + ID + " AND ProviderID = " + 5);
+        }
     }
 
 
