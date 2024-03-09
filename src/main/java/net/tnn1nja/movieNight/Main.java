@@ -31,8 +31,23 @@ public class Main {
         db.initialise();
 
         //Testing
-        Film film = Film.getFilm(3);
-        log.info(Arrays.toString(film.PROVIDERS));
+        Film[] films = Film.getFilms(new int[]{1,2,3});
+        for(Film f: films) {
+            log.info("ID: " + f.getID());
+            log.info("Title: " + f.getTitle());
+            log.info("Synopsis: " + f.getSynopsis());
+            log.info("Genres: " + Arrays.toString(f.getGenres()));
+            log.info("Year: " + f.getYear());
+            log.info("Rating: " + f.getRating());
+            log.info("TMDBID: " + f.getTMDBID());
+            log.info("Director:  " + f.getDirector());
+            log.info("Cast: " + Arrays.toString(f.getCast()));
+            log.info("Saved: " + f.getSaved());
+            log.info("Seen: " + f.getSeen());
+            log.info("Liked: " + f.getLiked());
+            log.info("Providers: " + Arrays.toString(f.getProviders()));
+            log.info("------------");
+        }
 
         //Program End
         onClose();

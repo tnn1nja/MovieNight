@@ -14,22 +14,22 @@ public class Film {
     private static final String baseURL = "\\media\\film";
 
     //Attributes
-    public int ID;
-    public int YEAR;
-    public int RATING;
-    public int[] GENRES;
-    public String TITLE;
-    public String SYNOPSIS;
-    public String TMDBID;
+    private int ID;
+    private int YEAR;
+    private int RATING;
+    private int[] GENRES;
+    private String TITLE;
+    private String SYNOPSIS;
+    private String TMDBID;
 
-    public String DIRECTOR;
-    public String[] CAST;
+    private String DIRECTOR;
+    private String[] CAST;
 
-    private Boolean SAVED;
-    private Boolean SEEN;
-    private Boolean LIKED;
+    private boolean SAVED = false;
+    private boolean SEEN = false;
+    private boolean LIKED = false;
 
-    public int[] PROVIDERS;
+    private int[] PROVIDERS;
 
 
     //Constructor
@@ -48,10 +48,8 @@ public class Film {
         CAST = Cast;
         PROVIDERS = Providers;
 
-        //Load UserData
-        loadUserData();
-
     }
+
 
     //Get Film by ID
     public static Film getFilm(int id){
@@ -129,23 +127,46 @@ public class Film {
         }
 
         //Format Providers
-        log.info(ProvidersBuilder.toString());
         int[] Providers = new int[ProvidersBuilder.size()];
         for(int i = 0; i<ProvidersBuilder.size(); i++){
             Providers[i] = ProvidersBuilder.get(i);
         }
 
-        //Return Film
-        return new Film(id, Title, Synopsis, Year, Rating, Genres, TmdbID, Director, Cast, Providers);
 
+        //Load User Data and Return Film
+        Film f = new Film(id, Title, Synopsis, Year, Rating, Genres, TmdbID, Director, Cast, Providers);
+        f.loadUserData();
+        return f;
+
+    }
+
+    //Get Films by IDs
+    public static Film[] getFilms(int[] ids){
+        Film[] output = new Film[ids.length];
+
+        for(int i = 0;i<ids.length;i++){
+            output[i] = getFilm(ids[i]);
+        }
+
+        return output;
     }
 
 
     //Getters
-    public String getRelativeCoverPath(){return baseURL + "\\" + TMDBID;}
     public Boolean getSaved(){return SAVED;}
     public Boolean getSeen(){return SEEN;}
     public Boolean getLiked(){return LIKED;}
+    public String getRelativeCoverPath(){return baseURL + "\\" + TMDBID;}
+    public int getID(){return ID;}
+    public int getYear(){return YEAR;}
+    public int getRating(){return RATING;}
+    public int[] getGenres(){return GENRES;}
+    public String getTitle(){return TITLE;}
+    public String getSynopsis(){return SYNOPSIS;}
+    public String getTMDBID(){return TMDBID;}
+    public String getDirector(){return DIRECTOR;}
+    public String[] getCast(){return CAST;}
+    public int[] getProviders(){return PROVIDERS;}
 
     //Setters
     public void setSaved(boolean value){
@@ -195,9 +216,6 @@ public class Film {
             //No Record Found
             }else{
                 log.warning("Failed to Load UserData for '" + TITLE + "', Assigning Defaults...");
-                SAVED = false;
-                LIKED = false;
-                SEEN = false;
             }
 
         //Failed to Parse ResultSet
