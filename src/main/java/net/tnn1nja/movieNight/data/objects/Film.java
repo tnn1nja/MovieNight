@@ -81,12 +81,10 @@ public class Film {
 
         //Format Genres
         String[] gSplit = inGenres.split(",");
-        log.info(Arrays.toString(gSplit));
         int[] Genres = new int[gSplit.length];
         for(int i = 0; i<gSplit.length; i++){
             Genres[i] = Integer.parseInt(gSplit[i]);
         }
-        log.info(Arrays.toString(Genres));
 
 
         //People Variables
@@ -117,11 +115,28 @@ public class Film {
         //Build Cast Array
         String[] Cast = CastBuilder.toArray(new String[0]);
 
-        log.info(Director);
-        log.info(Arrays.toString(Cast));
+        //Extract Providers
+        ArrayList<Integer> ProvidersBuilder = new ArrayList<Integer>();
+        try{
+            rs = db.query("SELECT * FROM ProvidersLink WHERE FilmID = " + id);
+            while(rs.next()){ //For Every Record
+                ProvidersBuilder.add(rs.getInt("ProviderID"));
+            }
+        }catch(SQLException e){
+            log.severe("Failed to extract Provider Data (ID=" + id + "): " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+
+        //Format Providers
+        log.info(ProvidersBuilder.toString());
+        int[] Providers = new int[ProvidersBuilder.size()];
+        for(int i = 0; i<ProvidersBuilder.size(); i++){
+            Providers[i] = ProvidersBuilder.get(i);
+        }
 
         //Return Film
-        return new Film(id, Title, Synopsis, Year, Rating, Genres, TmdbID, Director, Cast, null);
+        return new Film(id, Title, Synopsis, Year, Rating, Genres, TmdbID, Director, Cast, Providers);
 
     }
 

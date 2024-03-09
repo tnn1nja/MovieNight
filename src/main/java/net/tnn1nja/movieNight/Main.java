@@ -4,6 +4,7 @@ import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.data.objects.Film;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.tnn1nja.movieNight.data.Database;
@@ -30,8 +31,8 @@ public class Main {
         db.initialise();
 
         //Testing
-        Film film = Film.getFilm(5);
-        log.info(String.valueOf(film.GENRES[1]));
+        Film film = Film.getFilm(3);
+        log.info(Arrays.toString(film.PROVIDERS));
 
         //Program End
         onClose();
