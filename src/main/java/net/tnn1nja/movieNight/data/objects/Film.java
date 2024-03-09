@@ -48,21 +48,25 @@ public class Film {
         DIRECTOR = Director;
         CAST = Cast;
 
-        //Assign Providers
-        Arrays.sort(Providers);
+
+        //Check for Home Provider
         for(int i: Providers){
             if (i == 5) { //REPLACE WITH PROVIDER.HOME
                 HOME = true;
                 break;
             }
         }
+
+        //If Found - Remove and Set Owned to true
         if(HOME){
+            Arrays.sort(Providers);
             PROVIDERS = new int[Providers.length-1];
-            //Copy Values From Providers to PROVIDERS (Excluding Last Value)
             System.arraycopy(Providers, 0, PROVIDERS, 0, PROVIDERS.length);
         }else{
             PROVIDERS = Providers;
         }
+
+        log.fine("Film '" + TITLE + "' Initialised");
 
     }
 
@@ -160,6 +164,7 @@ public class Film {
     public static Film[] getFilms(int[] ids){
         Film[] output = new Film[ids.length];
 
+        //Run getFilm() for each input
         for(int i = 0;i<ids.length;i++){
             output[i] = getFilm(ids[i]);
         }
@@ -184,6 +189,7 @@ public class Film {
     public String[] getCast(){return CAST;}
     public int[] getProviders() {
         if(HOME){
+            //Add Home Provider and Return
             int[] Providers = new int[PROVIDERS.length+1];
             System.arraycopy(PROVIDERS, 0, Providers, 0, PROVIDERS.length);
             Providers[Providers.length-1] = 5; //REPLACE WITH PROVIDER.HOME
@@ -210,14 +216,19 @@ public class Film {
         saveUserData();
     }
 
-    //REPLACE WITH PROVIDER.HOME
     public void setHome(boolean value){
-        HOME = value;
-        if(HOME){
-            db.run("INSERT OR REPLACE INTO ProvidersLink(FilmID,ProviderID) VALUES(" + ID + "," + 5 + ")");
-        }else{
-            db.run("DELETE FROM ProvidersLink WHERE FilmID = " + ID + " AND ProviderID = " + 5);
+        if(HOME!=value) {
+            if (HOME) { //Add or Do Nothing
+                db.run("INSERT OR IGNORE INTO ProvidersLink(FilmID,ProviderID) VALUES(" + ID + "," + 5 + ")");
+            } else {//Remove from Database
+                db.run("DELETE FROM ProvidersLink WHERE FilmID = " + ID + " AND ProviderID = " + 5);
+            }
+            //Logging
+            log.info("Updated Home Provider for '" + TITLE + "'");
+        }else {
+            log.warning("Home value already " + HOME + ", ignored");
         }
+        HOME = value;
     }
 
 

@@ -249,8 +249,8 @@ public class APIs {
             db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(4, 'All 4', " +
                     "'https://www.channel4.com/','all4')");
             //CUSTOM
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(5, 'Owned'," +
-                    " null, 'owned')");
+            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(5, 'Home'," +
+                    " null, 'home')");
 
             //Logging
             log.info("Providers Table Populated.");
