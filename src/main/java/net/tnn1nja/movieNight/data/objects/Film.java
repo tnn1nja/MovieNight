@@ -14,22 +14,23 @@ public class Film {
     private static final String baseURL = "\\media\\film";
 
     //Attributes
-    private int ID;
-    private int YEAR;
-    private int RATING;
-    private int[] GENRES;
-    private String TITLE;
-    private String SYNOPSIS;
-    private String TMDBID;
+    private final int ID;
+    private final int YEAR;
+    private final int RATING;
+    private final int[] GENRES;
+    private final String TITLE;
+    private final String SYNOPSIS;
+    private final String TMDBID;
 
-    private String DIRECTOR;
-    private String[] CAST;
+    private final String DIRECTOR;
+    private final String[] CAST;
 
     private boolean SAVED = false;
     private boolean SEEN = false;
     private boolean LIKED = false;
 
-    private int[] PROVIDERS;
+    private final int[] PROVIDERS;
+    private boolean OWNED = false;
 
 
     //Constructor
@@ -46,7 +47,22 @@ public class Film {
         TMDBID = TmdbID;
         DIRECTOR = Director;
         CAST = Cast;
-        PROVIDERS = Providers;
+
+        //Assign Providers
+        Arrays.sort(Providers);
+        for(int i: Providers){
+            if (i == 5) { //REPLACE WITH PROVIDER.OWNED
+                OWNED = true;
+                break;
+            }
+        }
+        if(OWNED){
+            PROVIDERS = new int[Providers.length-1];
+            //Copy Values From Providers to PROVIDERS (Excluding Last Value)
+            System.arraycopy(Providers, 0, PROVIDERS, 0, PROVIDERS.length);
+        }else{
+            PROVIDERS = Providers;
+        }
 
     }
 
