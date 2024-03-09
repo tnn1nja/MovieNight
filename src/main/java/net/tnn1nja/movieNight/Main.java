@@ -29,6 +29,10 @@ public class Main {
         db.connect();
         db.initialise();
 
+        //Testing
+        Film film = Film.getFilm(5);
+        log.info(String.valueOf(film.GENRES[1]));
+
         //Program End
         onClose();
 

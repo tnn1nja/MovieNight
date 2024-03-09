@@ -3,6 +3,7 @@ package net.tnn1nja.movieNight.data.objects;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static net.tnn1nja.movieNight.Main.db;
 import static net.tnn1nja.movieNight.Main.log;
@@ -53,8 +54,9 @@ public class Film {
     }
 
     //Get Film by ID
-    public Film getFilm(int id){
+    public static Film getFilm(int id){
 
+        //Film Variables
         int Year;
         int Rating;
         String inGenres;
@@ -62,6 +64,7 @@ public class Film {
         String Synopsis;
         String TmdbID;
 
+        //Extract from Film Record
         ResultSet rs = db.query("SELECT * FROM Films WHERE FilmID = " + id);
         try {
             Title = rs.getString("Title");
@@ -71,18 +74,54 @@ public class Film {
             inGenres = rs.getString("Genres");
             TmdbID = rs.getString("TmdbID");
         }catch(SQLException e){
-            log.severe("Failed to extract Film Data: " + e.getMessage());
+            log.severe("Failed to extract Film Data (ID=" + id + "): " + e.getMessage());
             e.printStackTrace();
-            return null; //REMOVES NULL POINTER EXCEPTION!! DOCUMENT
+            return null;
         }
 
+        //Format Genres
         String[] gSplit = inGenres.split(",");
-        int[] Genres = new int[gSplit.length-1];
+        log.info(Arrays.toString(gSplit));
+        int[] Genres = new int[gSplit.length];
         for(int i = 0; i<gSplit.length; i++){
             Genres[i] = Integer.parseInt(gSplit[i]);
         }
+        log.info(Arrays.toString(Genres));
 
-        return new Film(id, Title, Synopsis, Year, Rating, Genres, TmdbID, null, null, null);
+
+        //People Variables
+        String Director = null;
+        ArrayList<String> CastBuilder = new ArrayList<String>();
+
+        //Extract People
+        rs = db.query("SELECT * FROM PRFLink WHERE FilmID = " + id);
+        try {
+            //For every record
+            while (rs.next()) {
+                int personID = rs.getInt("PersonID");
+                int role = rs.getInt("Role");
+                if(role==1){ //Assign Name to Director
+                    Director = db.query("SELECT Name FROM People WHERE PersonID="+personID).
+                            getString("Name");
+                }else{ //Append Name to Cast
+                    CastBuilder.add(db.query("SELECT Name FROM PEOPLE WHERE PersonID=" + personID).
+                            getString("Name"));
+                }
+            }
+        }catch(SQLException e){
+            log.severe("Failed to extract People Data (ID=" + id + "): " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+
+        //Build Cast Array
+        String[] Cast = CastBuilder.toArray(new String[0]);
+
+        log.info(Director);
+        log.info(Arrays.toString(Cast));
+
+        //Return Film
+        return new Film(id, Title, Synopsis, Year, Rating, Genres, TmdbID, Director, Cast, null);
 
     }
 
