@@ -14,9 +14,9 @@ public class Main {
     public static String mainPath = "D:/Coding/WBS/MovieNight/data"; //RELATIVE PATH LATER
 
     //Modules and Singletons
+    public static Logger log = Logger.getLogger("mnLogger");
     public static Database db = new Database();
     public static APIs api = new APIs();
-    public static Logger log = Logger.getLogger("mnLogger");
     public static UserConfig config = new UserConfig();
 
 
@@ -24,16 +24,16 @@ public class Main {
     public static void onStart(){
 
         //Logger Setup
-        LoggerUtils.setup(log, Level.INFO, mainPath);
+        LoggerUtils.setup(log, Level.FINE, mainPath);
         log.info("Logger Started.");
 
         //Database Setup
         db.connect();
         db.initialise();
 
-        //Testing
-        config.test();
-        config.save();
+        //Config Setup
+        config.createIfMissing();
+        config.load();
 
         //Program End
         onClose();
