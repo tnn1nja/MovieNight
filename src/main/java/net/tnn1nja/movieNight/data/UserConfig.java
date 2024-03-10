@@ -85,7 +85,7 @@ public class UserConfig {
         try {
             HashSet<Integer> opb = new HashSet<Integer>();
             for (String s : pb) {
-                opb.add(Integer.parseInt(s));
+                opb.add(Integer.parseInt(s.replace(" ", "")));
             }
             ownedProviders = opb;
         }catch(IllegalArgumentException ignored){}

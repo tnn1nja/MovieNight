@@ -4,7 +4,6 @@ import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.data.UserConfig;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.tnn1nja.movieNight.data.Database;
 
@@ -35,6 +34,12 @@ public class Main {
         //Database Setup
         db.connect();
         db.initialise();
+
+        //Testing
+        log.info(config.getOwnedProviders().toString());
+        config.addOwnedProvider(3);
+        log.info(config.getOwnedProviders().toString());
+
 
         //Program End
         onClose();
