@@ -23,17 +23,18 @@ public class Main {
     //On Program Start
     public static void onStart(){
 
+        //Config Setup
+        config.createIfMissing();
+        config.load();
+
         //Logger Setup
-        LoggerUtils.setup(log, Level.FINE, mainPath);
+        LoggerUtils.setup(log, config.getLogLevel(), mainPath);
         log.info("Logger Started.");
+        log.warning("Any Invalid User Preferences Have Been Defaulted.");
 
         //Database Setup
         db.connect();
         db.initialise();
-
-        //Config Setup
-        config.createIfMissing();
-        config.load();
 
         //Program End
         onClose();

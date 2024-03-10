@@ -18,9 +18,9 @@ public class UserConfig {
 
 
     //Stored Variables
-    public HashSet<Integer> ownedProviders = new HashSet<Integer>(Arrays.asList(1,2,3,4,5));
-    public String email = "Unknown";
-    public Level logLevel = Level.INFO;
+    private HashSet<Integer> ownedProviders = new HashSet<Integer>(Arrays.asList(1,2,3,4,5));
+    private String email = "Unknown";
+    private Level logLevel = Level.INFO;
 
     //Setters and Getters
     public void setEmail(String newEmail){email = newEmail;}
@@ -82,17 +82,18 @@ public class UserConfig {
         //Assign OwnedProvider
         String[] pb = config.getProperty("ownedProviders").replace("[", "").
                 replace("]","").split(",");
-        ownedProviders = new HashSet<Integer>();
-        for (String s: pb){
-            ownedProviders.add(Integer.parseInt(s));
-        }
+        try {
+            HashSet<Integer> opb = new HashSet<Integer>();
+            for (String s : pb) {
+                opb.add(Integer.parseInt(s));
+            }
+            ownedProviders = opb;
+        }catch(IllegalArgumentException ignored){}
 
         //Assign logLevel
         try {
             logLevel = Level.parse(config.getProperty("logLevel"));
-        }catch(IllegalArgumentException e){
-            logLevel = Level.INFO;
-        }
+        }catch(IllegalArgumentException ignored){}
 
     }
 
