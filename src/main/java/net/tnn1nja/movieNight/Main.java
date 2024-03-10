@@ -1,10 +1,9 @@
 package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.data.APIs;
-import net.tnn1nja.movieNight.data.objects.Provider;
+import net.tnn1nja.movieNight.data.UserConfig;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.tnn1nja.movieNight.data.Database;
@@ -18,6 +17,7 @@ public class Main {
     public static Database db = new Database();
     public static APIs api = new APIs();
     public static Logger log = Logger.getLogger("mnLogger");
+    public static UserConfig config = new UserConfig();
 
 
     //On Program Start
@@ -32,13 +32,8 @@ public class Main {
         db.initialise();
 
         //Testing
-        Provider.NETFLIX.output();
-        Provider.DISNEY.output();
-        Provider.IPLAYER.output();
-        Provider.DISNEY.output();
-        Provider.HOME.output();
-        log.info(Arrays.toString(Provider.getApiTags()));
-        api.populateProviders();
+        config.test();
+        config.save();
 
         //Program End
         onClose();

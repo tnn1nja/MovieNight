@@ -17,7 +17,7 @@ public class Provider {
     public static final Provider All4 = new Provider(4, "All 4",
             "https://www.channel4.com/","all4");
     public static final Provider HOME = new Provider(5, "Home",
-            null, "home");
+            "Not Applicable", "home");
 
     //Attributes
     private final int ID;
@@ -28,14 +28,19 @@ public class Provider {
     //Constructor
     private Provider(int Id, String Name, String Url, String ApiTag){
 
+        //Assign Values
         ID = Id;
         NAME = Name;
         URL = Url;
         APITAG = ApiTag;
 
+        //Add Values to ApiTag Array
         if(!(ApiTag.equalsIgnoreCase("home"))) {
             ApiTags.add(ApiTag);
         }
+
+        //Logging
+        log.info("'" + NAME + "' Successfully Instantiated");
 
     }
 
@@ -47,13 +52,4 @@ public class Provider {
 
     public static String[] getApiTags(){return ApiTags.toArray(new String[0]);}
 
-
-    //TO STRING
-    public void output(){
-        log.info("ID: "+ ID);
-        log.info("Name: " + NAME);
-        log.info("URL: " + URL);
-        log.info("ApiTag: " + APITAG);
-        log.info("--------");
-    }
 }

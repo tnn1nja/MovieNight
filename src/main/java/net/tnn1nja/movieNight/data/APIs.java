@@ -234,7 +234,7 @@ public class APIs {
 
 
     //Populate the Providers Table (Hardcoded)
-    public void populateProviders(){
+    private void populateProviders(){
         try {
 
             //Run SQL Commands
@@ -265,7 +265,7 @@ public class APIs {
     }
 
     //Return SQL Insert Command
-    private static String getProviderSQL(Provider p){
+    private String getProviderSQL(Provider p){
         return "INSERT OR REPLACE INTO Providers(ProviderID, Name, URL, ApiTag) VALUES('" +
                 p.getID() + "','" + p.getName() + "','" + p.getURL() + "','" + p.getApiTag() + "')";
     }
