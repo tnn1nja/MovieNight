@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Level;
 
 import static net.tnn1nja.movieNight.Main.log;
@@ -18,10 +16,19 @@ public class UserConfig {
     private final Properties config = new Properties();
     private final String filePath = mainPath + "\\config.properties";
 
+
     //Stored Variables
-    public ArrayList<Integer> ownedProviders = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5));
+    public HashSet<Integer> ownedProviders = new HashSet<Integer>(Arrays.asList(1,2,3,4,5));
     public String email = "Unknown";
-    public String logLevel = "info";
+    public Level logLevel = Level.INFO;
+
+    //Setters and Getters
+    public void setEmail(String newEmail){email = newEmail;}
+    public void addOwnedProvider(int i){ownedProviders.add(i);}
+    public void removeOwnedProvider(int i){ownedProviders.remove(i);}
+    public String getEmail(){return email;}
+    public HashSet<Integer> getOwnedProviders(){return ownedProviders;}
+    public Level getLogLevel(){return logLevel;}
 
 
     //Create Config File
@@ -31,7 +38,7 @@ public class UserConfig {
 
             config.setProperty("ownedProviders", ownedProviders.toString());
             config.setProperty("email", email);
-            config.setProperty("logLevel", logLevel);
+            config.setProperty("logLevel", logLevel.getName());
 
             save();
         }else {
@@ -41,6 +48,12 @@ public class UserConfig {
 
     //Save Config File
     public void save(){
+        //Save to Object
+        config.setProperty("email", email);
+        config.setProperty("ownedProviders", ownedProviders.toString());
+        config.setProperty("logLevel", logLevel.getName());
+
+        //Save to File
         try{
             FileOutputStream fos = new FileOutputStream(filePath);
             config.save(fos, "Movie Night - User Preferences.");
@@ -53,6 +66,7 @@ public class UserConfig {
 
     //Load Config File
     public void load(){
+        //Load from File
         try{
             FileInputStream fis = new FileInputStream(filePath);
             config.load(fis);
@@ -61,6 +75,25 @@ public class UserConfig {
             log.severe("Failed to Load Config File: " + e.getMessage());
             e.printStackTrace();
         }
+
+        //Assign Email
+        email = config.getProperty("email");
+
+        //Assign OwnedProvider
+        String[] pb = config.getProperty("ownedProviders").replace("[", "").
+                replace("]","").split(",");
+        ownedProviders = new HashSet<Integer>();
+        for (String s: pb){
+            ownedProviders.add(Integer.parseInt(s));
+        }
+
+        //Assign logLevel
+        try {
+            logLevel = Level.parse(config.getProperty("logLevel"));
+        }catch(IllegalArgumentException e){
+            logLevel = Level.INFO;
+        }
+
     }
 
 }
