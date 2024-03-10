@@ -1,5 +1,6 @@
 package net.tnn1nja.movieNight.data;
 
+import net.tnn1nja.movieNight.data.objects.Provider;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +26,6 @@ public class APIs {
     //Constants
     private static final String address = "https://streaming-availability.p.rapidapi.com/search/ultra";
     private static final String APIKey = "55a3606031mshcf4633bebae51abp130e52jsnc5476f35f166";
-    static final String[] providers = {"netflix", "disney", "iplayer", "all4"};
 
 
     //Populate the Database
@@ -34,7 +34,7 @@ public class APIs {
         populateProviders();
 
         //Iterate through every provider
-        for(String provider: providers){
+        for(String provider: Provider.getApiTags()){
 
             //Clean ProvidersLink
             db.run("DELETE FROM ProvidersLink WHERE ProviderID=" +
@@ -234,23 +234,15 @@ public class APIs {
 
 
     //Populate the Providers Table (Hardcoded)
-    private void populateProviders(){
+    public void populateProviders(){
         try {
-            //NETFLIX
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(1, 'Netflix', " +
-                    "'https://www.netflix.co.uk/', 'netflix')");
-            //DISNEY PLUS
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(2, 'Disney Plus', " +
-                    "'https://www.disneyplus.com/', 'disney')");
-            //IPLAYER
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(3, 'BBC iPlayer', " +
-                    "'https://bbc.co.uk/iplayer/', 'iplayer')");
-            //ALL4
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(4, 'All 4', " +
-                    "'https://www.channel4.com/','all4')");
-            //CUSTOM
-            db.runUnhandled("INSERT INTO Providers(ProviderID, Name, URL, ApiTag) VALUES(5, 'Home'," +
-                    " null, 'home')");
+
+            //Run SQL Commands
+            db.runUnhandled(getProviderSQL(Provider.NETFLIX));
+            db.runUnhandled(getProviderSQL(Provider.DISNEY));
+            db.runUnhandled(getProviderSQL(Provider.IPLAYER));
+            db.runUnhandled(getProviderSQL(Provider.All4));
+            db.runUnhandled(getProviderSQL(Provider.HOME));
 
             //Logging
             log.info("Providers Table Populated.");
@@ -270,6 +262,12 @@ public class APIs {
                 e.printStackTrace();
             }
         }
+    }
+
+    //Return SQL Insert Command
+    private static String getProviderSQL(Provider p){
+        return "INSERT OR REPLACE INTO Providers(ProviderID, Name, URL, ApiTag) VALUES('" +
+                p.getID() + "','" + p.getName() + "','" + p.getURL() + "','" + p.getApiTag() + "')";
     }
 
 

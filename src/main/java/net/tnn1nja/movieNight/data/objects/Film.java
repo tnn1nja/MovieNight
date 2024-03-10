@@ -51,7 +51,7 @@ public class Film {
 
         //Check for Home Provider
         for(int i: Providers){
-            if (i == 5) { //REPLACE WITH PROVIDER.HOME
+            if (i == Provider.HOME.getID()) {
                 HOME = true;
                 break;
             }
@@ -192,7 +192,7 @@ public class Film {
             //Add Home Provider and Return
             int[] Providers = new int[PROVIDERS.length+1];
             System.arraycopy(PROVIDERS, 0, Providers, 0, PROVIDERS.length);
-            Providers[Providers.length-1] = 5; //REPLACE WITH PROVIDER.HOME
+            Providers[Providers.length-1] = Provider.HOME.getID();
             return Providers;
         }
         else {
@@ -216,12 +216,13 @@ public class Film {
         saveUserData();
     }
 
-    public void setHome(boolean value){
+    public void setHomeProvider(boolean value){
         if(HOME!=value) {
             if (HOME) { //Add or Do Nothing
-                db.run("INSERT OR IGNORE INTO ProvidersLink(FilmID,ProviderID) VALUES(" + ID + "," + 5 + ")");
+                db.run("INSERT OR IGNORE INTO ProvidersLink(FilmID,ProviderID) VALUES(" + ID + "," +
+                        Provider.HOME + ")");
             } else {//Remove from Database
-                db.run("DELETE FROM ProvidersLink WHERE FilmID = " + ID + " AND ProviderID = " + 5);
+                db.run("DELETE FROM ProvidersLink WHERE FilmID = " + ID + " AND ProviderID = " + Provider.HOME);
             }
             //Logging
             log.info("Updated Home Provider for '" + TITLE + "'");
