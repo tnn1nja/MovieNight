@@ -44,6 +44,7 @@ public class Main {
     //On Program End
     public static void onClose(){
         db.close();
+        config.save();
         System.exit(0);
     }
 
