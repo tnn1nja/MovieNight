@@ -62,8 +62,8 @@ public class Search {
         @Override
         public int compare(Film f1, Film f2) {
 
-            int f1Value = f1.getTitle().indexOf(data);
-            int f2Value = f2.getTitle().indexOf(data);
+            int f1Value = f1.getTitle().toLowerCase().indexOf(data.toLowerCase());
+            int f2Value = f2.getTitle().toLowerCase().indexOf(data.toLowerCase());
 
             if(f1Value < f2Value) {
                 return -1; //First Film comes First
