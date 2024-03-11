@@ -4,6 +4,7 @@ import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.data.UserConfig;
 import net.tnn1nja.movieNight.data.objects.Film;
 import net.tnn1nja.movieNight.data.objects.Genre;
+import net.tnn1nja.movieNight.logic.Filter;
 import net.tnn1nja.movieNight.logic.Search;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
@@ -40,7 +41,7 @@ public class Main {
 
         //Testing
         Film[] films = Search.byString("magic");
-        //TESTED FILTER
+        films = Filter.stripGenre(films, 16);
         for(Film f: films){
             log.info("Year: " + f.getYear() + ", Rating: " +
                     f.getRating() + ", Genres: " + Arrays.toString(f.getGenres()));
