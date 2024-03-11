@@ -2,6 +2,7 @@ package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.data.UserConfig;
+import net.tnn1nja.movieNight.data.objects.Film;
 import net.tnn1nja.movieNight.logic.Search;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
@@ -38,7 +39,10 @@ public class Main {
         db.initialise();
 
         //Test
-
+        Film[] films = search.byString("The");
+        for(Film f: films){
+            log.info("Title: " + f.getTitle());
+        }
 
         //Program End
         onClose();
