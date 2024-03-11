@@ -65,13 +65,7 @@ public class Search {
             int f1Value = f1.getTitle().toLowerCase().indexOf(data.toLowerCase());
             int f2Value = f2.getTitle().toLowerCase().indexOf(data.toLowerCase());
 
-            if(f1Value < f2Value) {
-                return -1; //First Film comes First
-            }else if (f1Value > f2Value) {
-                return 1; //Second Film comes First
-            }else {
-                return 0; //Doesn't matter
-            }
+            return f1Value-f2Value;
 
         }
 
