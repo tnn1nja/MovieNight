@@ -40,11 +40,11 @@ public class Main {
         db.initialise();
 
         //Testing
-        Film[] films = Search.byString("magic");
-        films = Filter.stripGenre(films, 16);
+        Film[] films = Search.byString("the");
+        //films = Filter.limitProviders(films, new int[]{1, 2});
         for(Film f: films){
             log.info("Year: " + f.getYear() + ", Rating: " +
-                    f.getRating() + ", Genres: " + Arrays.toString(f.getGenres()));
+                    f.getRating() + ", Providers: " + Arrays.toString(f.getProviders()));
         }
 
         //Program End
