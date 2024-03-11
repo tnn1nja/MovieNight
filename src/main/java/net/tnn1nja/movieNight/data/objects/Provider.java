@@ -18,6 +18,7 @@ public class Provider {
             "https://www.channel4.com/","all4");
     public static final Provider HOME = new Provider(5, "Home",
             "Not Applicable", "home");
+    static{log.info("Providers Successfully Instantiated.");}
 
     //Attributes
     private final int ID;
@@ -38,9 +39,6 @@ public class Provider {
         if(!(ApiTag.equalsIgnoreCase("home"))) {
             ApiTags.add(ApiTag);
         }
-
-        //Logging
-        log.info("'" + NAME + "' Successfully Instantiated");
 
     }
 

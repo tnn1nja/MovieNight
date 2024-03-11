@@ -236,8 +236,9 @@ public class Film {
                     "VALUES(" + ID + "," + SAVED + "," + LIKED + "," + SEEN + ")");
             log.info("Saved UserData for '" + TITLE + "'");
 
-            //Otherwise Skip Saving
+        //Otherwise Delete Record
         }else{
+            db.run("DELETE FROM UserData WHERE FilmID=" + ID);
             log.warning("Not Saving Userdata for '" + TITLE + "', All Values are Default");
         }
     }

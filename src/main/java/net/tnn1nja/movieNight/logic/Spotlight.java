@@ -1,12 +1,14 @@
 package net.tnn1nja.movieNight.logic;
 
 import net.tnn1nja.movieNight.data.objects.Film;
+import net.tnn1nja.movieNight.data.objects.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import static net.tnn1nja.movieNight.Main.db;
-import static net.tnn1nja.movieNight.Main.log;
+import java.util.Random;
+
+import static net.tnn1nja.movieNight.Main.*;
 
 public class Spotlight {
 
@@ -14,6 +16,7 @@ public class Spotlight {
 
         //Create a List of Genres
         ArrayList<Integer> Genres = new ArrayList<Integer>();
+        Genres.add(Genre.getRandom());
 
         //Extract Genres
         ResultSet rs = db.query("SELECT Genres FROM Films,UserData " +
@@ -31,9 +34,28 @@ public class Spotlight {
             e.printStackTrace();
         }
 
-        log.info("Genres: " + Genres);
+        //Select Random Genre
+        int chosenGenre = Genres.get(new Random().nextInt(Genres.size()));
+        log.fine("Spotlight Chosen Genre: " + chosenGenre);
 
-        return null;
+        //Extract Random Film ID
+        String providerLimiter = config.getOwnedProviders()
+                .toString().replace("[", "(").replace("]", ")");
+        rs = db.query("" +
+                "SELECT DISTINCT Films.FilmID FROM Films,ProvidersLink" +
+                " WHERE Genres LIKE '%" + chosenGenre + "%'" +
+                " AND Films.FilmID = ProvidersLink.FilmID" +
+                " AND ProviderID in " + providerLimiter +
+                " ORDER BY RANDOM() " +
+                "LIMIT 1");
+
+        try{
+            return Film.getFilm(rs.getInt("FilmID"));
+        }catch (SQLException e) {
+            log.severe("Failed to Extract Film in Spotlight: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
 
     }
 

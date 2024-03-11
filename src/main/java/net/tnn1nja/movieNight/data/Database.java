@@ -39,7 +39,7 @@ public class Database {
         Statement s = conn.createStatement();
         log.finest("SQL Command Running: " + prompt);
         s.execute(prompt + ";");
-        log.fine("SQL Command Successfully Issued");
+        log.finer("SQL Command Successfully Issued");
     }
 
     //Run SQL Command
@@ -49,7 +49,7 @@ public class Database {
         }catch(SQLException e){
             //Catch Unique Constraint Violation From API Class
             if(e.getMessage().contains("CONSTRAINT_UNIQUE")){
-                log.fine("SQL Command Ignored - Duplicate Record Not Added.");
+                log.finer("SQL Command Ignored - Duplicate Record Not Added.");
             }else {
                 log.warning("SQL Command Failed - SQLException: " + e.getMessage());
                 e.printStackTrace();
@@ -63,7 +63,7 @@ public class Database {
             Statement s = conn.createStatement();
             log.finest("SQL Query Running: " + prompt);
             ResultSet rs = s.executeQuery(prompt + ";");
-            log.fine("SQL Query Successfully Issued");
+            log.finer("SQL Query Successfully Issued");
             return rs;
 
         } catch (SQLException e) {
