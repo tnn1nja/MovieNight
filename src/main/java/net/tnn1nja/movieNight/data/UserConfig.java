@@ -33,14 +33,17 @@ public class UserConfig {
 
     //Create Config File
     public void createIfMissing(){
+        //If File Is Missing
         if(!(new File(filePath).exists())) {
             log.info("Config File Missing, Creating...");
 
+            //Create Default File
             config.setProperty("ownedProviders", ownedProviders.toString());
             config.setProperty("email", email);
             config.setProperty("logLevel", logLevel.getName());
-
             save();
+
+        //Log Skipping at Low Level
         }else {
             log.fine("Config File Found, Skipping...");
         }

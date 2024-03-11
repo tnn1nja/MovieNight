@@ -2,6 +2,7 @@ package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.data.UserConfig;
+import net.tnn1nja.movieNight.logic.Search;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ public class Main {
     public static Database db = new Database();
     public static APIs api = new APIs();
     public static UserConfig config = new UserConfig();
+    public static Search search = new Search();
 
 
     //On Program Start
@@ -35,10 +37,7 @@ public class Main {
         db.connect();
         db.initialise();
 
-        //Testing
-        log.info(config.getOwnedProviders().toString());
-        config.addOwnedProvider(3);
-        log.info(config.getOwnedProviders().toString());
+        //Test
 
 
         //Program End
