@@ -98,12 +98,7 @@ public class Film {
         }
 
         //Format Genres
-        String[] gSplit = inGenres.split(",");
-        int[] Genres = new int[gSplit.length];
-        for(int i = 0; i<gSplit.length; i++){
-            Genres[i] = Integer.parseInt(gSplit[i]);
-        }
-
+        int[] Genres = formatGenres(inGenres);
 
         //People Variables
         String Director = null;
@@ -151,7 +146,6 @@ public class Film {
         for(int i = 0; i<ProvidersBuilder.size(); i++){
             Providers[i] = ProvidersBuilder.get(i);
         }
-
 
         //Load User Data and Return Film
         Film f = new Film(id, Title, Synopsis, Year, Rating, Genres, TmdbID, Director, Cast, Providers);
@@ -271,6 +265,19 @@ public class Film {
             log.severe("Failed Retrieve Values UserData ResultSet: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    //Format Genres
+    public static int[] formatGenres(String input){
+
+        String[] gSplit = input.split(",");
+        int[] Genres = new int[gSplit.length];
+        for(int i = 0; i<gSplit.length; i++){
+            Genres[i] = Integer.parseInt(gSplit[i]);
+        }
+
+        return Genres;
+
     }
 
 }

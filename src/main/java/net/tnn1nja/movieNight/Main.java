@@ -2,8 +2,7 @@ package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.data.UserConfig;
-import net.tnn1nja.movieNight.data.objects.Film;
-import net.tnn1nja.movieNight.logic.Search;
+import net.tnn1nja.movieNight.logic.Spotlight;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
 import java.util.logging.Logger;
@@ -14,13 +13,11 @@ public class Main {
     //Constants
     public static String mainPath = "D:/Coding/WBS/MovieNight/data"; //RELATIVE PATH LATER
 
-    //Modules and Singletons
+    //Singletons
     public static Logger log = Logger.getLogger("mnLogger");
     public static Database db = new Database();
     public static APIs api = new APIs();
     public static UserConfig config = new UserConfig();
-    public static Search search = new Search();
-
 
     //On Program Start
     public static void onStart(){
@@ -38,11 +35,8 @@ public class Main {
         db.connect();
         db.initialise();
 
-        //Test
-        Film[] films = search.byString("The");
-        for(Film f: films){
-            log.info("Title: " + f.getTitle());
-        }
+        //Testing
+        Spotlight.getSuggestion();
 
         //Program End
         onClose();

@@ -14,7 +14,7 @@ import static net.tnn1nja.movieNight.Main.log;
 public class Search {
 
     //Get Films Containing Inputted String
-    public Film[] byString(String searchData){
+    public static Film[] byString(String searchData){
 
         //Retrieve Films Containing Inputted String
         ResultSet rs = db.query("SELECT FilmID FROM Films WHERE lower(Title) LIKE '%" +
@@ -31,17 +31,21 @@ public class Search {
             e.printStackTrace();
             return null;
         }
+        log.finest("Successfully Extracted Search's FilmID's");
 
         //Construct Film for Each ID
         Film[] films = new Film[ids.size()];
         for(int i=0; i<films.length; i++){
             films[i] = Film.getFilm(ids.get(i));
         }
+        log.finest("Converted Search ID's to Film Array");
 
         //Sort Films By Index of Search String
         Arrays.sort(films, new StringIndexComparator(searchData));
+        log.finest("Sorted Search Film Array.");
 
         //Return
+        log.info("Search Prompt Completed.");
         return films;
 
     }
