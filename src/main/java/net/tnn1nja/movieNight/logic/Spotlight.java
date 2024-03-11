@@ -12,6 +12,7 @@ import static net.tnn1nja.movieNight.Main.*;
 
 public class Spotlight {
 
+    //Get a Random Suggested Film
     public static Film getSuggestion(){
 
         //Create a List of Genres
@@ -21,6 +22,8 @@ public class Spotlight {
         //Extract Genres
         ResultSet rs = db.query("SELECT Genres FROM Films,UserData " +
                 "WHERE Films.FilmID = UserData.FilmID");
+
+        //Add Each Genre to Method-Level List
         try{
             while(rs.next()) {
                 String stringGenres = rs.getString("Genres");
@@ -49,6 +52,7 @@ public class Spotlight {
                 " ORDER BY RANDOM() " +
                 "LIMIT 1");
 
+        //Construct and Return Film
         try{
             return Film.getFilm(rs.getInt("FilmID"));
         }catch (SQLException e) {

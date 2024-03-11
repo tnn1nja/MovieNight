@@ -2,8 +2,6 @@ package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.data.UserConfig;
-import net.tnn1nja.movieNight.data.objects.Film;
-import net.tnn1nja.movieNight.logic.Spotlight;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
 import java.util.logging.Logger;
@@ -35,10 +33,6 @@ public class Main {
         //Database Setup
         db.connect();
         db.initialise();
-
-        //Testing
-        Film f = Spotlight.getSuggestion();
-        log.info(f.getTitle());
 
         //Program End
         onClose();
