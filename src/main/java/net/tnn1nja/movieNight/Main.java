@@ -2,8 +2,12 @@ package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.data.UserConfig;
+import net.tnn1nja.movieNight.data.objects.Film;
+import net.tnn1nja.movieNight.data.objects.Genre;
+import net.tnn1nja.movieNight.logic.Search;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 import net.tnn1nja.movieNight.data.Database;
 
@@ -33,6 +37,14 @@ public class Main {
         //Database Setup
         db.connect();
         db.initialise();
+
+        //Testing
+        Film[] films = Search.byString("magic");
+        //TESTED FILTER
+        for(Film f: films){
+            log.info("Year: " + f.getYear() + ", Rating: " +
+                    f.getRating() + ", Genres: " + Arrays.toString(f.getGenres()));
+        }
 
         //Program End
         onClose();
