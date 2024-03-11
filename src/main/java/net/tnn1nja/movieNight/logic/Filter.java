@@ -50,6 +50,31 @@ public class Filter {
         return output.toArray(new Film[0]);
     }
 
+    //Limit Providers
+    public static Film[] limitProviders(Film[] Films, int[] Providers) {
+        ArrayList<Film> output = new ArrayList<Film>();
+
+        for(Film f: Films){
+            //Variables
+            int[] filmProviders = f.getProviders();
+            //Check if Film Contains One of the Providers
+            boolean contains = false;
+            for(int provider: Providers){
+                if ((intArrContains(filmProviders, provider))) {
+                    contains = true;
+                    break;
+                }
+            }
+            //If so, Add it
+            if(contains){
+                output.add(f);
+            }
+        }
+
+        //Return Final Array
+        return output.toArray(new Film[0]);
+    }
+
 
     //Int Array Contains
     private static boolean intArrContains(int[] array, int value){
@@ -60,6 +85,8 @@ public class Filter {
         }
         return false;
     }
+
+
 
 }
 
