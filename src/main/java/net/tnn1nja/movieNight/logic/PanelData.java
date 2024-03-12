@@ -21,6 +21,7 @@ public class PanelData{
     private PanelData(Film[] Films, String Title){
         FILMS = Films;
         TITLE = Title;
+        log.finer("PanelData Object Constructed.");
     }
 
     //Getters
@@ -46,6 +47,7 @@ public class PanelData{
         Film[] films = rsToArray(rs);
 
         //Return Title and Films
+        log.info("Random Genre Panel Data Generated");
         return new PanelData(films, title);
 
     }
@@ -70,6 +72,7 @@ public class PanelData{
         Film[] films = rsToArray(rs);
 
         //Return Title and Films
+        log.info("Random Provider Panel Data Generated");
         return new PanelData(films, title);
 
     }
@@ -85,6 +88,7 @@ public class PanelData{
 
         Film[] films = rsToArray(rs);
 
+        log.info("Best Rated Panel Data Generated");
         return new PanelData(films, "Best Rated.");
     }
 
@@ -99,7 +103,8 @@ public class PanelData{
 
         Film[] films = rsToArray(rs);
 
-        return new PanelData(films, "New to You");
+        log.info("Unseen Panel Data Generated");
+        return new PanelData(films, "New to You.");
     }
 
 
