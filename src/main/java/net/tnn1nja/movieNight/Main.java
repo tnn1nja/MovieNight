@@ -40,12 +40,12 @@ public class Main {
         db.initialise();
 
         //Testing
-        PanelData pd = PanelData.getBestRatedData();
+        PanelData pd = PanelData.getUnseenData();
         Film[] films = pd.getFilms();
         log.info("Title: " + pd.getTitle());
         for(int i=0;i<7;i++){
             Film f = films[i];
-            log.info("Year: " + f.getYear() + ", Rating: " +
+            log.info("Seen: " + f.getSeen() + ", Rating: " +
                     f.getRating() + ", Providers: " + Arrays.toString(f.getProviders()));
         }
 

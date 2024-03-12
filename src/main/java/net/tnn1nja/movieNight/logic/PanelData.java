@@ -91,9 +91,9 @@ public class PanelData{
     //Create Panel by Not Seen
     public static PanelData getUnseenData(){
         ResultSet rs = db.query("" +
-                "SELECT Films.FilmID " +
-                "FROM Films,UserData " +
-                "WHERE NOT Seen" +
+                "SELECT FilmID " +
+                "FROM Films " +
+                "WHERE FilmID NOT IN (SELECT FilmID FROM UserData) " +
                 "ORDER BY RANDOM() " +
                 "LIMIT 100");
 
