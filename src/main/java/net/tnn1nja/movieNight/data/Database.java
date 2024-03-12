@@ -96,7 +96,7 @@ public class Database {
                 "Saved BOOLEAN," +
                 "Liked BOOLEAN," +
                 "Seen BOOLEAN," +
-                "FOREIGN KEY (FilmID) REFERENCES Films(FilmID)," +
+                "FOREIGN KEY (FilmID) REFERENCES Films(FilmID) ON DELETE CASCADE," +
                 "UNIQUE(FilmID)" +
                 ")");
         //Providers Table
@@ -118,8 +118,8 @@ public class Database {
                 "ProviderLinkID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "FilmID INTEGER DEFAULT -1," +
                 "ProviderID INTEGER DEFAULT -1," +
-                "FOREIGN KEY (FilmID) REFERENCES Films(FilmID)," +
-                "FOREIGN KEY (ProviderID) REFERENCES Providers(ProviderID)," +
+                "FOREIGN KEY (FilmID) REFERENCES Films(FilmID) ON DELETE CASCADE," +
+                "FOREIGN KEY (ProviderID) REFERENCES Providers(ProviderID) ON DELETE CASCADE," +
                 "UNIQUE(FilmID,ProviderID)" +
                 ")");
         //PRFLink Table
@@ -128,8 +128,8 @@ public class Database {
                 "FilmID INTEGER DEFAULT -1," +
                 "PersonID INTEGER DEFAULT -1," +
                 "Role INTEGER DEFAULT -1," +
-                "FOREIGN KEY (FilmID) REFERENCES Films(FilmID)," +
-                "FOREIGN KEY (PersonID) REFERENCES People(PersonID)," +
+                "FOREIGN KEY (FilmID) REFERENCES Films(FilmID) ON DELETE CASCADE," +
+                "FOREIGN KEY (PersonID) REFERENCES People(PersonID) ON DELETE CASCADE," +
                 "UNIQUE(FilmID,PersonID,Role)" +
                 ")");
 

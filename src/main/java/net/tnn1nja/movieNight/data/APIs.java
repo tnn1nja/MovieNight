@@ -28,6 +28,20 @@ public class APIs {
     private static final String APIKey = "55a3606031mshcf4633bebae51abp130e52jsnc5476f35f166";
 
 
+    //Check If Database is Empty
+    public boolean ifDatabaseEmpty(){
+        try {
+            ResultSet rs = db.query("SELECT COUNT(*) FROM Films");
+            if (rs.getInt(1) == 0) {
+                return true;
+            }
+        }catch(SQLException e){
+            log.severe("Failed to read Database.");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     //Populate the Database
     public void populateDatabase(){
         //Populate the Providers Table.

@@ -2,7 +2,6 @@ package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.data.UserConfig;
-import net.tnn1nja.movieNight.logic.ReturnDataHandler;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
 import java.util.logging.Logger;
@@ -20,7 +19,7 @@ public class Main {
     public static UserConfig config = new UserConfig();
 
     //On Program Start
-    public static void onStart(){
+    public static void onStart() {
 
         //Config Setup
         config.createIfMissing();
@@ -34,11 +33,9 @@ public class Main {
         //Database Setup
         db.connect();
         db.initialise();
-
-        //Testing
-        log.info("" + ReturnDataHandler.addFilm("TestFilm", "A very excited film where things happen",
-                "2000", "100", 16, "James Cameron", "John, David, Cassie",
-                "TestCover"));
+        if(api.ifDatabaseEmpty()){
+            api.populateDatabase();
+        }
 
         //Program End
         onClose();
