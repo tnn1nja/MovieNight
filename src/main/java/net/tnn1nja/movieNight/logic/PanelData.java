@@ -56,7 +56,7 @@ public class PanelData{
         Object[] ownedProviders = config.getOwnedProviders().toArray();
         int chosenProvider = (int) ownedProviders[new Random().nextInt(ownedProviders.length-1)];
 
-        String title = "Films from " + Provider.getIndex().get(chosenProvider);
+        String title = "Films from " + Provider.getIndex().get(chosenProvider) + ".";
 
         //Select 6 Random Films of That Genre
         ResultSet rs = db.query("" +
@@ -72,6 +72,20 @@ public class PanelData{
         //Return Title and Films
         return new PanelData(films, title);
 
+    }
+
+    //Best Rated
+    public static PanelData getBestRatedData(){
+        ResultSet rs = db.query("" +
+                "SELECT FilmID " +
+                "From Films " +
+                "ORDER BY(Rating) " +
+                "DESC " +
+                "LIMIT 100");
+
+        Film[] films = rsToArray(rs);
+
+        return new PanelData(films, "Best Rated.");
     }
 
 

@@ -40,7 +40,7 @@ public class Main {
         db.initialise();
 
         //Testing
-        PanelData pd = PanelData.getProviderData();
+        PanelData pd = PanelData.getBestRatedData();
         Film[] films = pd.getFilms();
         log.info("Title: " + pd.getTitle());
         for(int i=0;i<7;i++){
