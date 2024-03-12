@@ -74,7 +74,7 @@ public class PanelData{
 
     }
 
-    //Best Rated
+    //Create Panel by Best Rated
     public static PanelData getBestRatedData(){
         ResultSet rs = db.query("" +
                 "SELECT FilmID " +
@@ -87,6 +87,21 @@ public class PanelData{
 
         return new PanelData(films, "Best Rated.");
     }
+
+    //Create Panel by Not Seen
+    public static PanelData getUnseenData(){
+        ResultSet rs = db.query("" +
+                "SELECT Films.FilmID " +
+                "FROM Films,UserData " +
+                "WHERE NOT Seen" +
+                "ORDER BY RANDOM() " +
+                "LIMIT 100");
+
+        Film[] films = rsToArray(rs);
+
+        return new PanelData(films, "New to You");
+    }
+
 
 
     //ResultSet to Array
