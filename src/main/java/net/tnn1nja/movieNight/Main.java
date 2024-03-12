@@ -2,11 +2,9 @@ package net.tnn1nja.movieNight;
 
 import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.data.UserConfig;
-import net.tnn1nja.movieNight.data.objects.Film;
-import net.tnn1nja.movieNight.logic.PanelData;
+import net.tnn1nja.movieNight.logic.ReturnDataHandler;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
-import java.util.Arrays;
 import java.util.logging.Logger;
 import net.tnn1nja.movieNight.data.Database;
 
@@ -36,6 +34,10 @@ public class Main {
         //Database Setup
         db.connect();
         db.initialise();
+
+        //Testing
+        log.info("" + ReturnDataHandler.addFilm("TestFilm", "A very excited film where things happen",
+                "40BC", "70", 16, "James Cameron", "John, David, Cassie"));
 
         //Program End
         onClose();
