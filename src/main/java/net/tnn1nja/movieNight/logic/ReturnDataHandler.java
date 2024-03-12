@@ -10,6 +10,7 @@ import static net.tnn1nja.movieNight.Main.*;
 
 public class ReturnDataHandler {
 
+    //Add Custom Film to the Database
     public static boolean addFilm(String Title, String Synopsis, String Year, String Rating, int Genre,
                               String Director, String Cast, String CoverPath){
         //Parse Cast
@@ -21,6 +22,7 @@ public class ReturnDataHandler {
         try{
             parsedYear = Integer.parseInt(Year);
             parsedRating = Integer.parseInt(Rating);
+            log.fine("Year and Rating Successfully parsed");
         }catch(NumberFormatException e){
             log.warning("Film Year or Rating cannot be parsed.");
             return false;
@@ -32,12 +34,14 @@ public class ReturnDataHandler {
             log.warning("Inputted Values Out of Range.");
             return false;
         }
+        log.finer("Return Values Within Range.");
 
         //Validate Cover
         if(!(new File(mainPath + "\\media\\film\\" + CoverPath  + ".jpg").exists())){
             log.info("File Doesn't Exist.");
             return false;
         }
+        log.finer("Return File Found.");
 
 
         //Film Insert Command
@@ -75,9 +79,12 @@ public class ReturnDataHandler {
 
 
         //Success
+        log.finer("Custom Film Successfully Inputted");
         return true;
+
     }
 
+    //Remove Film From the Database
     public static boolean removeFilm(int id){
         try {
             db.runUnhandled("DELETE FROM Films WHERE FilmID=" + id);
