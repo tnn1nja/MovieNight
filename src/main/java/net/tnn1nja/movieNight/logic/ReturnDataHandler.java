@@ -34,7 +34,7 @@ public class ReturnDataHandler {
         }
 
         //Validate Cover
-        if(!(new File(mainPath + "\\media\\film" + CoverPath  + ".jpg").exists())){
+        if(!(new File(mainPath + "\\media\\film\\" + CoverPath  + ".jpg").exists())){
             log.info("File Doesn't Exist.");
             return false;
         }
@@ -60,7 +60,8 @@ public class ReturnDataHandler {
         }
 
         //ProviderLink Insert Command
-        db.run("INSERT INTO ProvidersLink(FilmID, ProviderID) VALUES(" + FilmID + ", " + Provider.HOME);
+        db.run("INSERT INTO ProvidersLink(FilmID, ProviderID) VALUES(" + FilmID + ", " +
+                Provider.HOME.getID() + ")");
 
         //People Insert Command
         for (String castMember : parsedCast) {
@@ -75,6 +76,16 @@ public class ReturnDataHandler {
 
         //Success
         return true;
+    }
+
+    public static boolean removeFilm(int id){
+        try {
+            db.runUnhandled("DELETE FROM Films WHERE FilmID=" + id);
+            return true;
+        }catch(SQLException e){
+            log.warning("Failed to delete Film: " + e.getMessage());
+            return false;
+        }
     }
 
 }
