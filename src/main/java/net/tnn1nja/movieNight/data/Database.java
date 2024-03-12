@@ -16,6 +16,7 @@ public class Database {
         try {
             conn = DriverManager.getConnection(dbUrl);
             log.info("Database Connection Established");
+            run("PRAGMA foreign_keys=ON");
         }catch(SQLException e){
             log.severe("Failed to Establish Database Connection: " + e.getMessage());
             e.printStackTrace();
@@ -76,8 +77,6 @@ public class Database {
 
     //Create Tables (Hardcoded)
     public void initialise(){
-        //Set Constants
-        run("PRAGMA foreign_keys=ON");
         //Films Table
         run("CREATE TABLE IF NOT EXISTS Films (" +
                 "FilmID INTEGER PRIMARY KEY AUTOINCREMENT," +
