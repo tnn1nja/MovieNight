@@ -3,8 +3,8 @@ package net.tnn1nja.movieNight;
 import net.tnn1nja.movieNight.data.APIs;
 import net.tnn1nja.movieNight.data.UserConfig;
 import net.tnn1nja.movieNight.data.objects.Film;
-import net.tnn1nja.movieNight.data.objects.Genre;
 import net.tnn1nja.movieNight.logic.Filter;
+import net.tnn1nja.movieNight.logic.PanelData;
 import net.tnn1nja.movieNight.logic.Search;
 import net.tnn1nja.movieNight.utils.logger.LoggerUtils;
 
@@ -40,9 +40,11 @@ public class Main {
         db.initialise();
 
         //Testing
-        Film[] films = Search.byString("the");
-        //films = Filter.limitProviders(films, new int[]{1, 2});
-        for(Film f: films){
+        PanelData pd = PanelData.getProviderData();
+        Film[] films = pd.getFilms();
+        log.info("Title: " + pd.getTitle());
+        for(int i=0;i<7;i++){
+            Film f = films[i];
             log.info("Year: " + f.getYear() + ", Rating: " +
                     f.getRating() + ", Providers: " + Arrays.toString(f.getProviders()));
         }

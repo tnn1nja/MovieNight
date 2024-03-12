@@ -1,6 +1,7 @@
 package net.tnn1nja.movieNight.data.objects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static net.tnn1nja.movieNight.Main.log;
 
@@ -8,6 +9,7 @@ public class Provider {
 
     //Constants
     private static final ArrayList<String> ApiTags = new ArrayList<String>();
+    private static final HashMap<Integer, String> index = new HashMap<Integer, String>();
     public static final Provider NETFLIX = new Provider(1, "Netflix",
             "https://www.netflix.co.uk/", "netflix");
     public static final Provider DISNEY = new Provider (2, "Disney Plus",
@@ -40,6 +42,9 @@ public class Provider {
             ApiTags.add(ApiTag);
         }
 
+        //Add to Index
+        index.put(ID, NAME);
+
     }
 
     //Getters
@@ -49,5 +54,6 @@ public class Provider {
     public String getApiTag(){return APITAG;}
 
     public static String[] getApiTags(){return ApiTags.toArray(new String[0]);}
+    public static HashMap<Integer, String> getIndex(){return index;}
 
 }
