@@ -1,11 +1,17 @@
 package net.tnn1nja.movieNight.logic;
 
-import static net.tnn1nja.movieNight.Main.log;
+import net.tnn1nja.movieNight.data.objects.Provider;
+
+import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import static net.tnn1nja.movieNight.Main.*;
 
 public class ReturnDataHandler {
 
     public static boolean addFilm(String Title, String Synopsis, String Year, String Rating, int Genre,
-                              String Director, String Cast){
+                              String Director, String Cast, String CoverPath){
         //Parse Cast
         String[] parsedCast = Cast.split(",");
 
@@ -27,6 +33,47 @@ public class ReturnDataHandler {
             return false;
         }
 
+        //Validate Cover
+        if(!(new File(mainPath + "\\media\\film" + CoverPath  + ".jpg").exists())){
+            log.info("File Doesn't Exist.");
+            return false;
+        }
+
+
+        //Film Insert Command
+        db.run("INSERT INTO Films(Title, Synopsis, Year, Rating, Genres, TmdbID) VALUES(" +
+                "'" + Title + "'," +
+                "'" + Synopsis + "'," +
+                parsedYear + "," +
+                parsedRating + "," +
+                "'" + Genre + "'," +
+                "'" + CoverPath + "')");
+
+        //Get FilmID
+        String FilmID = null;
+        ResultSet rs = db.query("SELECT FilmID From Films WHERE TmdbID ='" + CoverPath + "'");
+        try {
+            FilmID = rs.getString("FilmID");
+        } catch (SQLException e) {
+            log.severe("Failed to Insert Film: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        //ProviderLink Insert Command
+        db.run("INSERT INTO ProvidersLink(FilmID, ProviderID) VALUES(" + FilmID + ", " + Provider.HOME);
+
+        //People Insert Command
+        for (String castMember : parsedCast) {
+            db.run("INSERT INTO People(Name) VALUES('" + castMember + "')");
+            db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES(" + FilmID + "," +
+                    "(SELECT PersonID FROM People WHERE Name = '" + castMember + "'), 0)");
+        }
+        db.run("INSERT INTO PEOPLE(Name) VALUES('" + Director + "')");
+        db.run("INSERT INTO PRFLink(FilmID, PersonID, Role) VALUES(" + FilmID + "," +
+                "(SELECT PersonID FROM People WHERE Name = '" + Director + "'), 1)");
+
+
+        //Success
         return true;
     }
 

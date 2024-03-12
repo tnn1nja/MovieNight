@@ -37,7 +37,8 @@ public class Main {
 
         //Testing
         log.info("" + ReturnDataHandler.addFilm("TestFilm", "A very excited film where things happen",
-                "40BC", "70", 16, "James Cameron", "John, David, Cassie"));
+                "2000", "100", 16, "James Cameron", "John, David, Cassie",
+                "TestCover"));
 
         //Program End
         onClose();
