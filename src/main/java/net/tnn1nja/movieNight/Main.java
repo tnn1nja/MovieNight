@@ -10,14 +10,14 @@ import net.tnn1nja.movieNight.data.Database;
 public class Main {
 
     //Constants
-    public static String mainPath = "D:/Coding/WBS/MovieNight/data"; //RELATIVE PATH LATER
+    public static String mainPath = "."; //RELATIVE PATH LATER
 
     //Singletons
     public static Logger log = Logger.getLogger("mnLogger");
     public static Database db = new Database();
     public static APIs api = new APIs();
     public static UserConfig config = new UserConfig();
-    public static Display display = new Display();
+    public static ConsoleDisplay ui = new ConsoleDisplay();
 
     //On Program Start
     public static void onStart() {
@@ -39,7 +39,7 @@ public class Main {
         }
 
         //Display
-        display.demo();
+        ui.demo();
 
         //Program End
         onClose();

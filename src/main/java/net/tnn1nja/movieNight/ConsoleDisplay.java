@@ -9,23 +9,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Display {
+public class ConsoleDisplay {
 
     //Colors
     private static final String GREEN  = "\u001B[32m";
     private static final String WHITE  = "\u001B[97m";
 
-    //Take Input
-    public String getInput(String prompt){
-        Scanner s = new Scanner(System.in);
-        System.out.print(prompt);
-        return s.next();
-    }
-
     //Program Demo Method (Changed Per Test)
     public void demo(){
         String prompt = getInput("Enter Search Data: ");
         beautyFilmOut(Search.byString(prompt));
+    }
+
+    //Take User Console Input
+    public String getInput(String prompt){
+        Scanner s = new Scanner(System.in);
+        System.out.print(prompt);
+        return s.next();
     }
 
     //Film Array Console Output
