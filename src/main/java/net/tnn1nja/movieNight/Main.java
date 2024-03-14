@@ -17,6 +17,7 @@ public class Main {
     public static Database db = new Database();
     public static APIs api = new APIs();
     public static UserConfig config = new UserConfig();
+    public static Display display = new Display();
 
     //On Program Start
     public static void onStart() {
@@ -36,6 +37,9 @@ public class Main {
         if(api.ifDatabaseEmpty()){
             api.populateDatabase();
         }
+
+        //Display
+        display.demo();
 
         //Program End
         onClose();
