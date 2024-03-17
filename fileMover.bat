@@ -1,0 +1,1 @@
+move /y codebase\target\movieNight-1.0.jar data\libs

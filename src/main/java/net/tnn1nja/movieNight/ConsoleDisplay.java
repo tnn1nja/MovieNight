@@ -3,21 +3,20 @@ package net.tnn1nja.movieNight;
 import net.tnn1nja.movieNight.data.objects.Film;
 import net.tnn1nja.movieNight.data.objects.Genre;
 import net.tnn1nja.movieNight.data.objects.Provider;
-import net.tnn1nja.movieNight.logic.Search;
-import net.tnn1nja.movieNight.logic.Spotlight;
+import net.tnn1nja.movieNight.logic.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import static net.tnn1nja.movieNight.Main.api;
-import static net.tnn1nja.movieNight.Main.ARG;
+import static net.tnn1nja.movieNight.Main.*;
 
 public class ConsoleDisplay {
 
     //Colors
     private static final String GREEN  = "\u001B[32m";
     private static final String WHITE  = "\u001B[97m";
+    private static final String RED    = "\u001B[31m";
 
     //Program Demo Method
     public void demo(){
@@ -35,7 +34,63 @@ public class ConsoleDisplay {
         //SPOTLIGHT
         }else if(ARG.equalsIgnoreCase("spotlight")){
             beautyFilmOut(new Film[]{Spotlight.getSuggestion()});
-    }
+
+        //FILTER
+        }else if(ARG.equalsIgnoreCase("filter")){
+            //Cast Owned Providers
+            Integer[] prov = config.getOwnedProviders().toArray(new Integer[0]);
+            int[] castProv = new int[prov.length];
+            for(int i = 0; i<prov.length;i++){
+                castProv[i] = prov[i];
+            }
+
+            String prompt = getInput("Enter Search Data: ");
+            Film[] films  = Search.byString(prompt);
+            beautyFilmOut(films);
+            beautyFilmOut(
+                    //Filter.stripBelowYear(films, 2022)
+                    //Filter.stripBelowRating(films, 60)
+                    //Filter.stripGenre(films,35)
+                    //Filter.stripSeen(films)
+                    Filter.limitProviders(films, castProv)
+            );
+
+        //BROWSE
+        } else if(ARG.equalsIgnoreCase("browse")){
+            //Variable
+            PanelData p;
+
+            //Genre Panel
+            p = PanelData.getGenreData();
+            System.out.println(RED + "Panel Title: " + WHITE + p.getTitle());
+            beautyFilmOut(limitArr(p.getFilms()));
+            //Provider Panel
+            p = PanelData.getProviderData();
+            System.out.println(RED + "Panel Title: " + WHITE + p.getTitle());
+            beautyFilmOut(limitArr(p.getFilms()));
+            //Rating Panel
+            p = PanelData.getBestRatedData();
+            System.out.println(RED + "Panel Title: " + WHITE + p.getTitle());
+            beautyFilmOut(limitArr(p.getFilms()));
+            //Unseen Panel
+            p = PanelData.getUnseenData();
+            System.out.println(RED + "Panel Title: " + WHITE + p.getTitle());
+            beautyFilmOut(limitArr(p.getFilms()));
+
+        //INPUT
+        }else if(ARG.equalsIgnoreCase("input")){
+            boolean b = ReturnDataHandler.addFilm(getInput("Enter a Title: "),
+                    getInput("Enter Synopsis: "), getInput("Enter Year: "),
+                    getInput("Enter Rating (/100): "), Integer.parseInt(getInput("Enter a Genre: ")),
+                            getInput("Enter the Director: "), getInput("Enter the Cast: "),
+                            getInput("Enter the Cover Files Name: "));
+
+            if(b){
+                log.info("Film Added to the Database.");
+            }else{
+                log.warning("Film Data Invalid, Rejected.");
+            }
+        }
     }
 
     //Take User Console Input
@@ -86,6 +141,19 @@ public class ConsoleDisplay {
             //Line Break
             System.out.println("------------------\n");
 
+        }
+    }
+
+    //Film Limiter
+    public Film[] limitArr(Film[] films){
+        if(films.length<7){
+            return films;
+        }else{
+            Film[] limited = new Film[6];
+            for(int i = 0; i<6; i++){
+                limited[i] = films[i];
+            }
+            return limited;
         }
     }
 }
