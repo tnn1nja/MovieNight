@@ -16,6 +16,9 @@ public class Search {
     //Get Films Containing Inputted String
     public static Film[] byString(String searchData){
 
+        //Logging
+        log.info("Searching for Prompt: " + searchData);
+
         //Retrieve Films Containing Inputted String
         ResultSet rs = db.query("SELECT FilmID FROM Films WHERE lower(Title) LIKE '%" +
                 searchData.toLowerCase() + "%'");

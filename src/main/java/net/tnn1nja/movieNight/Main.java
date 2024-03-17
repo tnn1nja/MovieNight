@@ -10,7 +10,8 @@ import net.tnn1nja.movieNight.data.Database;
 public class Main {
 
     //Constants
-    public static String mainPath = "."; //RELATIVE PATH LATER
+    public static String mainPath = ".";
+    public static String ARG;
 
     //Singletons
     public static Logger log = Logger.getLogger("mnLogger");
@@ -20,7 +21,10 @@ public class Main {
     public static ConsoleDisplay ui = new ConsoleDisplay();
 
     //On Program Start
-    public static void onStart() {
+    public static void onStart(String arg) {
+
+        //Define Argument
+        ARG = arg;
 
         //Config Setup
         config.createIfMissing();

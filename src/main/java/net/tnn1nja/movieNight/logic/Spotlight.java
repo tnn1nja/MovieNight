@@ -38,6 +38,7 @@ public class Spotlight {
         }
 
         //Select Random Genre
+        log.info("Selecting Random Genre from: " + Genres);
         int chosenGenre = Genres.get(new Random().nextInt(Genres.size()));
         log.fine("Spotlight Chosen Genre: " + chosenGenre);
 

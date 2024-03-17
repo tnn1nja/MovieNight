@@ -4,10 +4,14 @@ import net.tnn1nja.movieNight.data.objects.Film;
 import net.tnn1nja.movieNight.data.objects.Genre;
 import net.tnn1nja.movieNight.data.objects.Provider;
 import net.tnn1nja.movieNight.logic.Search;
+import net.tnn1nja.movieNight.logic.Spotlight;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+
+import static net.tnn1nja.movieNight.Main.api;
+import static net.tnn1nja.movieNight.Main.ARG;
 
 public class ConsoleDisplay {
 
@@ -15,17 +19,30 @@ public class ConsoleDisplay {
     private static final String GREEN  = "\u001B[32m";
     private static final String WHITE  = "\u001B[97m";
 
-    //Program Demo Method (Changed Per Test)
+    //Program Demo Method
     public void demo(){
-        String prompt = getInput("Enter Search Data: ");
-        beautyFilmOut(Search.byString(prompt));
+
+        //POPULATE
+        if(ARG.equalsIgnoreCase("populate")) {
+            api.populateDatabase();
+
+        //SEARCH
+        }else if(ARG.equalsIgnoreCase("search")) {
+            String prompt = getInput("Enter Search Data: ");
+            beautyFilmOut(Search.byString(prompt));
+            getInput("Enter to Exit.");
+
+        //SPOTLIGHT
+        }else if(ARG.equalsIgnoreCase("spotlight")){
+            beautyFilmOut(new Film[]{Spotlight.getSuggestion()});
+    }
     }
 
     //Take User Console Input
     public String getInput(String prompt){
         Scanner s = new Scanner(System.in);
         System.out.print(prompt);
-        return s.next();
+        return s.nextLine();
     }
 
     //Film Array Console Output
